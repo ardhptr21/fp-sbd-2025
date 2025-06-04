@@ -1,0 +1,35 @@
+{{#> "layouts/base"}}
+
+{{#*inline "meta"}}
+<title>ECommerce</title>
+{{/inline}}
+
+{{#*inline "content"}}
+<main class="flex justify-center items-center mt-32">
+  <section class="grid grid-cols-3 gap-10">
+    {{> "cards/product-card"
+    img_url="https://yoline.co.id/media/products/ProductBeraspremium_sedapwangi_25kg.png"
+    title="Beras Premium Sedap Wangi 25kg"
+    price=86000
+    category="Sembako"
+    }}
+    {{> "cards/product-card"
+    img_url="https://image.made-in-china.com/202f0j00gOPiJtwsiAqy/2022-New-Hot-Sale-Notebook-Laptop-Computer-F123-Global-Version-Windows10-12-3-Inch-Processor-N4125-Laptop-Notebook.webp"
+    title="Laptop Notebook F123"
+    price=3500000
+    category="Elektronik"
+    }}
+    {{> "cards/product-card"
+    img_url="https://images.tokopedia.net/img/cache/700/hDjmkQ/2022/10/2/4ded5587-dcee-41b8-81e4-4d638860dc8a.jpg"
+    title="Rucas Jeans Season 9 Black Jeans"
+    price=399000
+    category="Fashion"
+    }}
+  </section>
+</main>
+{{/inline}}
+
+{{#*inline "script"}}
+{{/inline}}
+
+{{/"layouts/base"}}

@@ -15,16 +15,20 @@ app.use("/public", express.static(path.join(process.cwd(), "public")));
 /**============================================
  *               SET CONFIGS
  *=============================================**/
-app.engine(".hbs", engine({ extname: "hbs", defaultLayout: false }));
-app.set("view engine", ".hbs");
+app.engine("hbs", engine({ extname: "hbs", defaultLayout: false }));
+app.set("view engine", "hbs");
 app.set("views", path.join(process.cwd(), "src", "views"));
 
 /**============================================
  *               ROUTES
  *=============================================**/
-app.get("/", (req, res) => {
-  return res.render("home");
-});
+import baseRoute from "./routes/base-route.js";
+import authRoute from "./routes/auth-route.js";
+import productRoute from "./routes/product-route.js";
+
+app.use("/", baseRoute);
+app.use("/auth", authRoute);
+app.use("/product", productRoute);
 
 connectDB(() => {
   app.listen(env.app.port, env.app.host, () =>

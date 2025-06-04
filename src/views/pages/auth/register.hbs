@@ -1,0 +1,47 @@
+{{#> "layouts/base"}}
+
+{{#*inline "meta"}}
+<title>Register</title>
+{{/inline}}
+
+{{#*inline "content"}}
+<main class="flex justify-center items-center h-screen">
+  <div class="card bg-base-100 shadow-sm w-full max-w-xl border border-base-200">
+    <div class="card-body">
+      <div class="mb-4 space-y-2">
+        <h1 class="text-2xl font-bold">Register</h1>
+        <p>
+          Setelah mendaftar, Anda dapat masuk ke akun Anda.
+        </p>
+      </div>
+      <form action="" class="space-y-3">
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">Nama</legend>
+          <input type="text" class="input w-full" placeholder="Masukkan nama lengkap" />
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">Email</legend>
+          <input type="text" class="input w-full" placeholder="Masukkan email" />
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">No. Telepon</legend>
+          <input type="text" class="input w-full" placeholder="Masukkan nomor telepon" />
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">Password</legend>
+          <input type="text" class="input w-full" placeholder="Masukkan password" />
+        </fieldset>
+        <button type="submit" class="btn btn-primary w-full">Login</button>
+        <p class="text-sm text-center">
+          Belum punya akun? <a href="/auth/register" class="link link-primary">Daftar sekarang</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</main>
+{{/inline}}
+
+{{#*inline "script"}}
+{{/inline}}
+
+{{/"layouts/base"}}

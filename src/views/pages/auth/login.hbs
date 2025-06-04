@@ -14,15 +14,20 @@
           Silakan masuk ke akun Anda untuk melanjutkan.
         </p>
       </div>
-      <form action="" class="space-y-3">
+      <form method="POST" class="space-y-3">
         <fieldset class="fieldset">
-          <legend class="fieldset-legend">Username</legend>
-          <input type="text" class="input w-full" placeholder="Masukkan username" />
+          <legend class="fieldset-legend">Email atau Username</legend>
+          <input type="text" name="credential" class="input w-full" placeholder="Masukkan email atau username" />
         </fieldset>
         <fieldset class="fieldset">
           <legend class="fieldset-legend">Password</legend>
-          <input type="text" class="input w-full" placeholder="Masukkan password" />
+          <input type="password" name="password" class="input w-full" placeholder="Masukkan password" />
         </fieldset>
+        {{#if state}}
+        <div role="alert" class="alert alert-{{state.type}}">
+          <span>{{state.message}}</span>
+        </div>
+        {{/if}}
         <button type="submit" class="btn btn-primary w-full">Login</button>
         <p class="text-sm text-center">
           Belum punya akun? <a href="/auth/register" class="link link-primary">Daftar sekarang</a>

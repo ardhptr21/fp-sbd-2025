@@ -1,5 +1,6 @@
 import express from "express";
 import { engine } from "express-handlebars";
+import session from "express-session";
 import path from "path";
 import { env } from "./lib/env.js";
 import { connectDB } from "./lib/db.js";
@@ -11,11 +12,32 @@ const app = express();
  *=============================================**/
 app.use(express.urlencoded({ extended: false }));
 app.use("/public", express.static(path.join(process.cwd(), "public")));
+app.use(
+  session({
+    secret: env.app.secret,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
+  })
+);
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  res.locals.isAuthenticated = req.session.isAuthenticated || false;
+  next();
+});
 
 /**============================================
  *               SET CONFIGS
  *=============================================**/
-app.engine("hbs", engine({ extname: "hbs", defaultLayout: false }));
+app.engine(
+  "hbs",
+  engine({
+    extname: "hbs",
+    defaultLayout: false,
+  })
+);
 app.set("view engine", "hbs");
 app.set("views", path.join(process.cwd(), "src", "views"));
 

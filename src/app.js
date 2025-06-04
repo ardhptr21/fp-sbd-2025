@@ -25,10 +25,12 @@ app.set("views", path.join(process.cwd(), "src", "views"));
 import baseRoute from "./routes/base-route.js";
 import authRoute from "./routes/auth-route.js";
 import productRoute from "./routes/product-route.js";
+import dashboardRoute from "./routes/dashboard-route.js";
 
 app.use("/", baseRoute);
 app.use("/auth", authRoute);
 app.use("/product", productRoute);
+app.use("/dashboard", dashboardRoute);
 
 connectDB(() => {
   app.listen(env.app.port, env.app.host, () =>

@@ -1,0 +1,47 @@
+{{#> "layouts/dashboard"}}
+
+{{#*inline "meta"}}
+<title>ECommerce</title>
+{{/inline}}
+
+{{#*inline "content"}}
+<section class="w-full">
+  <h1 class="text-3xl font-bold">Profil Pengguna</h1>
+  <div class="mt-10 bg-base-200 p-5 rounded-xl">
+    <form action="" class="space-y-3">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Nama</legend>
+        <input type="text" class="input w-full" placeholder="Masukkan nama lengkap" />
+      </fieldset>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">No. Telepon</legend>
+        <input type="text" class="input w-full" placeholder="Masukkan nomor telepon" />
+      </fieldset>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Alamat</legend>
+        <input type="text" class="input w-full" placeholder="Masukkan alamat" />
+      </fieldset>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Tanggal Lahir</legend>
+        <input type="date" class="input w-full" />
+      </fieldset>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Jenis Kelamin</legend>
+        <select class="select w-full">
+          <option disabled selected>Pilih</option>
+          <option>Laki - laki</option>
+          <option>Perempuan</option>
+        </select>
+      </fieldset>
+      <div class="text-right">
+        <button class="btn btn-primary w-xs">Simpan</button>
+      </div>
+    </form>
+  </div>
+</section>
+{{/inline}}
+
+{{#*inline "script"}}
+{{/inline}}
+
+{{/"layouts/dashboard"}}

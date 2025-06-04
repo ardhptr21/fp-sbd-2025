@@ -1,0 +1,26 @@
+{
+  "name": "fp-sbd-2025",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "concurrently \"pnpm run app:dev\" \"pnpm run css:watch\"",
+    "app:dev": "nodemon src/app.js",
+    "css:watch": "tailwindcss -i src/assets/css/tailwind.css -o public/css/styles.css --watch",
+    "css:build": "tailwindcss -i src/assets/css/tailwind.css -o public/css/styles.css --minify"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.8",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.10",
+    "tailwindcss": "^4.1.8"
+  },
+  "packageManager": "pnpm@10.11.1+sha512.e519b9f7639869dc8d5c3c5dfef73b3f091094b0a006d7317353c72b124e80e1afd429732e28705ad6bfa1ee879c1fce46c128ccebd3192101f43dd67c667912",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.3",
+    "mongoose": "^8.15.1"
+  }
+}

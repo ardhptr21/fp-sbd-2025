@@ -1,4 +1,3 @@
-// TODO: implement payment model
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema(

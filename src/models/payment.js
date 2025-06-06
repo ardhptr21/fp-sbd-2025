@@ -13,9 +13,14 @@ const schema = new mongoose.Schema(
       trim: true,
     },
     payment_date: {
-        type: Date,
-        required: true,
-    }
+      type: Date,
+      required: true,
+    },
+    transaction: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Transaction", // reference to transaction-model
+      required: true,
+    },
   },
   {
     timestamps: true,

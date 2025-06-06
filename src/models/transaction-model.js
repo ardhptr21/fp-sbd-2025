@@ -16,9 +16,9 @@ const schema = new mongoose.Schema(
       enum: ["pending", "completed", "cancelled"],
       default: "pending",
     },
-    profile: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Profile", // reference to profile-model
+      ref: "User", // reference to user-model
       required: true,
     },
   },

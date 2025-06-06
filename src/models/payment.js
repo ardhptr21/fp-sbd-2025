@@ -10,7 +10,7 @@ const schema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      trim: true,
+      enum: ["pending", "paid", "failed"],
     },
     payment_date: {
       type: Date,

@@ -4,25 +4,25 @@ const schema = new mongoose.Schema(
   {
     full_name: {
       type: String,
-      required: true,
+      required: false,
       unique: false,
       trim: true,
     },
     birthday: {
       type: Date,
-      required: true,
+      required: false,
       unique: false,
       trim: true,
     },
     address: {
       type: String,
-      required: true,
+      required: false,
       unique: false,
       trim: true,
     },
     phone: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
       trim: true,
     },

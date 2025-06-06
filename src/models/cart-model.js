@@ -8,9 +8,9 @@ const schema = new mongoose.Schema(
       unique: false,
       trim: true,
     },
-    profile: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Profile",
+      ref: "User",
       required: true,
     },
     product: {

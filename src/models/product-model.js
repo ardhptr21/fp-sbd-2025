@@ -25,16 +25,9 @@ const schema = new mongoose.Schema(
         required: true,
     },
     is_active: {
-        type: Number,
+        type: Boolean,
         required: true,
-    },
-    created_at: {
-        type: Date,
-        required: true,
-    },
-    updated_at: {
-        type: Date,
-        required: true,
+        default: true,
     },
 
      category: {

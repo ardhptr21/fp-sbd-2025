@@ -27,6 +27,18 @@ export const registerHandler = (req, res) => {
 /**
  * @type {express.Handler}
  */
+export const logoutHandler = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send("Internal Server Error");
+    }
+    return res.redirect("/");
+  });
+};
+
+/**
+ * @type {express.Handler}
+ */
 export const registeringHandler = async (req, res) => {
   const body = req.body;
   const result = validateParse(registerValidator, body);

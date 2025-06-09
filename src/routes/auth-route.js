@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   loggingInHandler,
   loginHandler,
+  logoutHandler,
   registerHandler,
   registeringHandler,
 } from "../handlers/auth-handler.js";
@@ -12,5 +13,6 @@ router.get("/login", loginHandler);
 router.get("/register", registerHandler);
 router.post("/login", loggingInHandler);
 router.post("/register", registeringHandler);
+router.get("/logout", logoutHandler);
 
 export default router;

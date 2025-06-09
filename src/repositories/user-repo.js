@@ -6,3 +6,14 @@ export const getUserByCredential = async (credential) => {
   });
   return user;
 };
+
+export const checkIfUserExistsByCreds = async (email, username) => {
+  const count = await User.countDocuments({
+    $or: [{ username }, { email }],
+  });
+  return count > 0;
+};
+
+export const createUser = async (data) => {
+  return await User.create(data);
+};

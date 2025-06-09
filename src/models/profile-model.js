@@ -5,19 +5,14 @@ const schema = new mongoose.Schema(
     full_name: {
       type: String,
       required: false,
-      unique: false,
       trim: true,
     },
-    birthday: {
+    date_of_birth: {
       type: Date,
-      required: false,
-      unique: false,
       trim: true,
     },
     address: {
       type: String,
-      required: false,
-      unique: false,
       trim: true,
     },
     phone: {
@@ -30,6 +25,7 @@ const schema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+      unique: true,
     },
   },
   {

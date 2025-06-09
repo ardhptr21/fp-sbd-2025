@@ -14,26 +14,31 @@
           Setelah mendaftar, Anda dapat masuk ke akun Anda.
         </p>
       </div>
-      <form action="" class="space-y-3">
+      <form action="" method="POST" class="space-y-3">
         <fieldset class="fieldset">
           <legend class="fieldset-legend">Nama</legend>
-          <input type="text" class="input w-full" placeholder="Masukkan nama lengkap" />
+          <input type="text" name="name" class="input w-full" placeholder="Masukkan nama lengkap" />
+          {{> "forms/field_error" field_name="name"}}
         </fieldset>
         <fieldset class="fieldset">
           <legend class="fieldset-legend">Email</legend>
-          <input type="text" class="input w-full" placeholder="Masukkan email" />
+          <input type="text" name="email" class="input w-full" placeholder="Masukkan email" />
+          {{> "forms/field_error" field_name="email"}}
         </fieldset>
         <fieldset class="fieldset">
           <legend class="fieldset-legend">No. Telepon</legend>
-          <input type="text" class="input w-full" placeholder="Masukkan nomor telepon" />
+          <input type="text" name="phone" class="input w-full" placeholder="Masukkan nomor telepon" />
+          {{> "forms/field_error" field_name="phone"}}
         </fieldset>
         <fieldset class="fieldset">
           <legend class="fieldset-legend">Password</legend>
-          <input type="text" class="input w-full" placeholder="Masukkan password" />
+          <input type="text" name="password" class="input w-full" placeholder="Masukkan password" />
+          {{> "forms/field_error" field_name="password"}}
         </fieldset>
-        <button type="submit" class="btn btn-primary w-full">Login</button>
+        {{> "commons/alert"}}
+        <button type="submit" class="btn btn-primary w-full">Register</button>
         <p class="text-sm text-center">
-          Belum punya akun? <a href="/auth/register" class="link link-primary">Daftar sekarang</a>
+          Sudah punya akun? <a href="/auth/login" class="link link-primary">Login sekarang</a>
         </p>
       </form>
     </div>

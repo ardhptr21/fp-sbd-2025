@@ -11,6 +11,7 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
       enum: ["pending", "paid", "failed"],
+      default: "pending",
     },
     payment_date: {
       type: Date,
@@ -18,7 +19,7 @@ const schema = new mongoose.Schema(
     },
     transaction: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Transaction", // reference to transaction-model
+      ref: "Transaction",
       required: true,
     },
   },

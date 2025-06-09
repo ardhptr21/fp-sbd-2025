@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 const schema = new mongoose.Schema(
   {
     quantity: {
@@ -8,12 +9,12 @@ const schema = new mongoose.Schema(
     },
     product: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Product", // reference to product-model
+      ref: "Product",
       required: true,
     },
     transaction: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Transaction", // reference to transaction-model
+      ref: "Transaction",
       required: true,
     },
   },
@@ -22,4 +23,4 @@ const schema = new mongoose.Schema(
   }
 );
 
-export const TransactionDetail = mongoose.model("TransactionDetail", schema);
+export const Order = mongoose.model("Order", schema);

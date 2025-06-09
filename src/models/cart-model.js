@@ -24,4 +24,6 @@ const schema = new mongoose.Schema(
   }
 );
 
+schema.index({ user: 1, product: 1 }, { unique: true });
+
 export const Cart = mongoose.model("Cart", schema);

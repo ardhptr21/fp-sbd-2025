@@ -9,6 +9,7 @@ const schema = new mongoose.Schema(
     total_price: {
       type: Number,
       required: true,
+      min: 0,
     },
     status: {
       type: String,
@@ -18,7 +19,7 @@ const schema = new mongoose.Schema(
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // reference to user-model
+      ref: "User",
       required: true,
     },
   },

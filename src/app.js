@@ -1,9 +1,9 @@
 import express from "express";
-import { engine } from "express-handlebars";
 import session from "express-session";
 import path from "path";
 import { env } from "./lib/env.js";
 import { connectDB } from "./lib/db.js";
+import hbs from "./lib/hbs.js";
 
 const app = express();
 
@@ -31,13 +31,7 @@ app.use((req, res, next) => {
 /**============================================
  *               SET CONFIGS
  *=============================================**/
-app.engine(
-  "hbs",
-  engine({
-    extname: "hbs",
-    defaultLayout: false,
-  })
-);
+app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 app.set("views", path.join(process.cwd(), "src", "views"));
 

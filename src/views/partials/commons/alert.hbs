@@ -1,0 +1,11 @@
+{{#if alert}}
+{{#if (eq alert.type "error")}}
+<div role="alert" class="alert alert-error">
+  <span>{{alert.message}}</span>
+</div>
+{{else if (eq alert.type "success")}}
+<div role="alert" class="alert alert-success">
+  <span>{{alert.message}}</span>
+</div>
+{{/if}}
+{{/if}}

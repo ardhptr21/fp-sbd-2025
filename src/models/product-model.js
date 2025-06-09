@@ -13,29 +13,29 @@ const schema = new mongoose.Schema(
       trim: true,
     },
     price: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
+      min: 0,
     },
     stock: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
+      min: 0,
     },
     image: {
-        type: String, // if image is url
-        required: true,
-    },
-    is_active: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-
-     category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",  // reference to categoory-model
+      type: String,
       required: true,
     },
-
+    is_active: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
   },
   {
     timestamps: true,

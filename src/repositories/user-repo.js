@@ -15,5 +15,5 @@ export const checkIfUserExistsByCreds = async (email, username) => {
 };
 
 export const createUser = async (data) => {
-  return await User.create(data);
+  return await User.insertOne(data);
 };

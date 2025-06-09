@@ -6,5 +6,5 @@ export const checkIfProfileExistsByPhone = async (phone) => {
 };
 
 export const createProfile = async (data) => {
-  return await Profile.create(data);
+  return await Profile.insertOne(data);
 };

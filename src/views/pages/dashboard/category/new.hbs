@@ -1,0 +1,32 @@
+{{#> "layouts/dashboard"}}
+
+{{#*inline "meta"}}
+<title>ECommerce</title>
+{{/inline}}
+
+{{#*inline "content"}}
+<section class="w-full">
+  <h1 class="text-3xl font-bold">Tambah Kategori</h1>
+
+  <form action="" method="POST" class="mt-10 space-y-3">
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Nama</legend>
+      <input type="text" name="name" class="input w-full" placeholder="Masukkan nama kategori" />
+      {{> "forms/field_error" field_name="name"}}
+    </fieldset>
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Deskripsi</legend>
+      <textarea name="description" class="textarea w-full resize-none" rows="8" placeholder="..."></textarea>
+      {{> "forms/field_error" field_name="description"}}
+    </fieldset>
+    {{> "commons/alert"}}
+    <button class="btn btn-primary w-full">Submit</button>
+    <a class="btn w-full" href="/dashboard/category">Kembali</a>
+  </form>
+</section>
+{{/inline}}
+
+{{#*inline "script"}}
+{{/inline}}
+
+{{/"layouts/dashboard"}}

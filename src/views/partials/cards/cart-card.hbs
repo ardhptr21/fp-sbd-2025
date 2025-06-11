@@ -1,0 +1,57 @@
+<div class="bg-base-200 rounded-xl p-5" id="product-{{product._id}}">
+  <div class="flex gap-5 items-start">
+    <figure class="w-32 aspect-[4/3] rounded-xl overflow-hidden">
+      <img class="object-cover" src="{{product.image}}" alt="{{product.name}}" />
+    </figure>
+    <div class="space-y-2">
+      <h3>{{product.name}}</h3>
+      <h4 class="text-xl font-bold">Rp. <span id="total-price">{{mul product.price quantity}}</span></h4>
+    </div>
+  </div>
+  <div class="mt-5 flex items-center justify-between">
+    <button class="btn btn-sm btn-error">Hapus</button>
+    <div class="join">
+      <button class="btn btn-sm btn-square btn-decrease">-</button>
+      <input type="text" name="quantity" class="input input-sm text-center quantity-input" value="{{quantity}}">
+      <button class="btn btn-sm btn-square btn-increase">+</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const container = document.querySelector("#product-{{product._id}}");
+      const stock = Number('{{product.stock}}');
+      const quantityInput = container.querySelector(".quantity-input");
+      const btnIncrease = container.querySelector(".btn-increase");
+      const btnDecrease = container.querySelector(".btn-decrease");
+      const totalPriceEl = container.querySelector("#total-price");
+      const productPrice = Number('{{product.price}}');
+
+      btnIncrease.addEventListener("click", async () => {
+        let value = parseInt(quantityInput.value) || 0;
+        if (value >= stock) return;
+        quantityInput.value = value + 1;
+        totalPriceEl.textContent = (value + 1) * productPrice;
+        try {
+          await updateQuantity('{{product._id}}', value + 1);
+        } catch {
+          quantityInput.value = value;
+        }
+      });
+
+      btnDecrease.addEventListener("click", async () => {
+        let value = parseInt(quantityInput.value) || 0;
+        if (value > 1) {
+          quantityInput.value = value - 1;
+          totalPriceEl.textContent = (value - 1) * productPrice;
+
+          try {
+            await updateQuantity('{{product._id}}', value - 1);
+          } catch {
+            quantityInput.value = value;
+          }
+        }
+      });
+    })();
+  </script>
+</div>

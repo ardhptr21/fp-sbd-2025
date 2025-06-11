@@ -8,6 +8,8 @@ const hbs = create({
   extname: "hbs",
   defaultLayout: false,
   helpers: {
+    mul: (a, b) => a * b,
+
     or: (a, b) => a || b,
 
     eq: (a, b) => a === b,

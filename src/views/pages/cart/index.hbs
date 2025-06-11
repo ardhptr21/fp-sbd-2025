@@ -1,0 +1,65 @@
+{{#> "layouts/base"}}
+
+{{#*inline "meta"}}
+<title>Rucas Jeans Season 9 Black Jeans</title>
+{{/inline}}
+
+{{#*inline "content"}}
+<main class="flex flex-col justify-center items-start mt-32 max-w-7xl mx-auto">
+  <section class="flex flex-row justify-center items-start gap-5 w-full">
+    <div class="w-3/5 space-y-5">
+      {{#each carts}}
+      {{> "cards/cart-card" product=this.product quantity=this.quantity}}
+      {{else}}
+      {{/each}}
+    </div>
+    <div class="w-2/5 p-5 bg-base-200 rounded-xl">
+      <div>
+        <h2 class="text-lg font-bold">Ringkasan Belanja</h2>
+        <div class="flex justify-between mt-5">
+          <p>Total</p>
+          <p class="text-xl font-bold">Rp. <span id="total-price-cart">{{total_price}}</span></p>
+        </div>
+        <div class="divider"></div>
+        <button class="btn btn-primary w-full">Beli</button>
+      </div>
+    </div>
+  </section>
+</main>
+{{/inline}}
+
+{{#*inline "script"}}
+<script>
+  const getStatus = async () => {
+    const res = await fetch("/cart/status");
+    if (!res.ok) {
+      throw new Error("Failed to fetch cart status");
+    }
+    const data = await res.json();
+    return data;
+  }
+
+  const updateTotalPrice = (price) => {
+    const totalPriceElement = document.getElementById("total-price-cart");
+    totalPriceElement.textContent = price;
+  }
+
+  const updateQuantity = async (id, value) => {
+    const res = await fetch(`/cart/${id}/update-quantity`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ quantity: value })
+    })
+    if (!res.ok) {
+      throw new Error("Failed to update quantity");
+    }
+
+    const state = await getStatus();
+    updateTotalPrice(state.total_price);
+  }
+</script>
+{{/inline}}
+
+{{/"layouts/base"}}

@@ -5,8 +5,11 @@
 {{/inline}}
 
 {{#*inline "content"}}
-<main class="flex justify-center items-start mt-32 max-w-7xl mx-auto">
-  <section class="flex flex-row justify-center gap-5 w-full">
+<main class="flex flex-col justify-center items-start mt-32 max-w-7xl mx-auto">
+  <section class="mb-10 w-full">
+    {{> "commons/alert"}}
+  </section>
+  <section class="flex flex-row justify-center items-start gap-5 w-full">
     <div class="w-full max-w-sm sticky top-0">
       <div class="rounded-xl overflow-hidden">
         <img src="{{product.image}}" class="w-full h-full object-cover" alt="{{product.name}}">
@@ -31,7 +34,7 @@
         <p>Stok: <span class="font-bold">{{product.stock}}</span></p>
         <div class="join">
           <button class="btn btn-square">-</button>
-          <input type="text" class="input text-center" value="1" id="quantity">
+          <input type="text" name="quantity" class="input text-center" value="1" id="quantity">
           <button class="btn btn-square">+</button>
         </div>
         <div class="flex justify-between mt-5">
@@ -39,8 +42,18 @@
           <p class="text-xl font-bold">Rp. <span id="total-price">{{product.price}}</span></p>
         </div>
         <div class="space-y-3 mt-12">
-          <button class="btn btn-primary w-full">Keranjang</button>
-          <button class="btn btn-primary btn-outline w-full">Beli Sekarang</button>
+          {{#if isAuthenticated}}
+          <form action="/cart" method="POST" id="cart-form">
+            <input type="hidden" name="product" value="{{product._id}}">
+            <input type="hidden" name="quantity">
+            <button type="submit" class="btn btn-primary w-full">Keranjang</button>
+          </form>
+          {{else}}
+          <div class="space-y-2">
+            <a href="/auth/login" class="btn btn-primary btn-outline w-full">Login</a>
+            <p class="text-xs text-base-content/40">*anda perlu login sebelum membeli</p>
+          </div>
+          {{/if}}
         </div>
       </div>
     </div>
@@ -84,6 +97,20 @@
     };
     e.target.value = value
     totalPriceEl.textContent = value * productPrice;
+  });
+
+  const cartForm = document.getElementById('cart-form');
+  cartForm.addEventListener('submit', function (e) {
+    const existingInput = cartForm.querySelector('input[name="quantity"]');
+    if (existingInput) {
+      existingInput.value = quantityInput.value;
+    } else {
+      const hiddenInput = document.createElement('input');
+      hiddenInput.type = 'hidden';
+      hiddenInput.name = 'quantity';
+      hiddenInput.value = quantityInput.value;
+      cartForm.appendChild(hiddenInput);
+    }
   });
 </script>
 {{/inline}}

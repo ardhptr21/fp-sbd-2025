@@ -1,8 +1,8 @@
 import express from "express";
 import session from "express-session";
 import path from "path";
-import { env } from "./lib/env.js";
 import { connectDB } from "./lib/db.js";
+import { env } from "./lib/env.js";
 import hbs from "./lib/hbs.js";
 
 const app = express();
@@ -11,6 +11,7 @@ const app = express();
  *               MIDDLEWARES
  *=============================================**/
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use("/public", express.static(path.join(process.cwd(), "public")));
 app.use(
   session({
@@ -45,15 +46,17 @@ app.set("views", path.join(process.cwd(), "src", "views"));
 /**============================================
  *               ROUTES
  *=============================================**/
-import baseRoute from "./routes/base-route.js";
 import authRoute from "./routes/auth-route.js";
-import productRoute from "./routes/product-route.js";
+import baseRoute from "./routes/base-route.js";
+import cartRoute from "./routes/cart-route.js";
 import dashboardRoute from "./routes/dashboard-route.js";
+import productRoute from "./routes/product-route.js";
 
 app.use("/", baseRoute);
 app.use("/auth", authRoute);
 app.use("/product", productRoute);
 app.use("/dashboard", dashboardRoute);
+app.use("/cart", cartRoute);
 
 connectDB(() => {
   app.listen(env.app.port, env.app.host, () =>

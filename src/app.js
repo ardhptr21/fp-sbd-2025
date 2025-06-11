@@ -25,6 +25,12 @@ app.use(
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   res.locals.isAuthenticated = req.session.isAuthenticated || false;
+  res.locals.flash = req.session.flash || {};
+  res.locals.form_errors = req.session.form_errors || {};
+  res.locals.form = req.session.form || {};
+
+  delete req.session.flash;
+  delete req.session.form_errors;
   next();
 });
 

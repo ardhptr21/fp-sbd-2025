@@ -6,13 +6,14 @@ import {
   registerHandler,
   registeringHandler,
 } from "../handlers/auth-handler.js";
+import { authenticate, unauthenticated } from "../middlewares/auth-middleware.js";
 
 const router = Router();
 
-router.get("/login", loginHandler);
-router.get("/register", registerHandler);
-router.post("/login", loggingInHandler);
-router.post("/register", registeringHandler);
-router.get("/logout", logoutHandler);
+router.get("/login", unauthenticated, loginHandler);
+router.get("/register", unauthenticated, registerHandler);
+router.post("/login", unauthenticated, loggingInHandler);
+router.post("/register", unauthenticated, registeringHandler);
+router.get("/logout", authenticate(), logoutHandler);
 
 export default router;

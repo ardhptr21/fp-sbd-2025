@@ -26,11 +26,6 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    is_active: {
-      type: Boolean,
-      required: true,
-      default: true,
-    },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",

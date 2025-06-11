@@ -9,24 +9,28 @@ import {
   dashboardOrder,
   dashboardPayment,
   dashboardProduct,
+  dashboardProductNew,
   dashboardProfile,
   dashboardTransaction,
 } from "../handlers/dashboard-handler.js";
+import { authenticate } from "../middlewares/auth-middleware.js";
 
 const router = Router();
 
-router.get("/profile", dashboardProfile);
-router.get("/account", dashboardAccount);
-router.get("/product", dashboardProduct);
+router.get("/account", authenticate(), dashboardAccount);
+router.get("/profile", authenticate(["customer"]), dashboardProfile);
 
-router.get("/category", dashboardCategory);
-router.get("/category/new", dashboardCategoryNew);
-router.post("/category/new", dashboardCategoryCreate);
-router.get("/category/:slug", dashboardCategoryEdit);
-router.post("/category/:slug", dashboardCategoryUpdate);
+router.get("/product", authenticate(["admin"]), dashboardProduct);
+router.get("/product/new", authenticate(["admin"]), dashboardProductNew);
 
-router.get("/order", dashboardOrder);
-router.get("/transaction", dashboardTransaction);
-router.get("/payment", dashboardPayment);
+router.get("/category", authenticate(["admin"]), dashboardCategory);
+router.get("/category/new", authenticate(["admin"]), dashboardCategoryNew);
+router.post("/category/new", authenticate(["admin"]), dashboardCategoryCreate);
+router.get("/category/:slug", authenticate(["admin"]), dashboardCategoryEdit);
+router.post("/category/:slug", authenticate(["admin"]), dashboardCategoryUpdate);
+router.get("/order", authenticate(["admin"]), dashboardOrder);
+
+router.get("/transaction", authenticate(["customer"]), dashboardTransaction);
+router.get("/payment", authenticate(["customer"]), dashboardPayment);
 
 export default router;

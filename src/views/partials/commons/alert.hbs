@@ -1,11 +1,11 @@
-{{#if alert}}
-{{#if (eq alert.type "error")}}
+{{#if flash.alert}}
+{{#if (eq flash.alert.type "error")}}
 <div role="alert" class="alert alert-error">
-  <span>{{alert.message}}</span>
+  <span>{{flash.alert.message}}</span>
 </div>
-{{else if (eq alert.type "success")}}
+{{else if (eq flash.alert.type "success")}}
 <div role="alert" class="alert alert-success">
-  <span>{{alert.message}}</span>
+  <span>{{flash.alert.message}}</span>
 </div>
 {{/if}}
 {{/if}}

@@ -4,6 +4,7 @@ import {
   checkCategoryExists,
   createCategory,
   getCategories,
+  getCategoriesForSelect,
   getCategoryBySlug,
   updateCategory,
 } from "../repositories/category-repo.js";
@@ -39,8 +40,23 @@ export const dashboardAccount = (req, res) => {
  * @type {express.Handler}
  */
 export const dashboardProduct = (req, res) => {
-  return res.render("pages/dashboard/product");
+  return res.render("pages/dashboard/product/index");
 };
+
+/**
+ * @type {express.Handler}
+ */
+export const dashboardProductNew = async (req, res) => {
+  const categories = await getCategoriesForSelect();
+  return res.render("pages/dashboard/product/new", {
+    categories,
+  });
+};
+
+/**
+ * @type {express.Handler}
+ */
+export const dashboardProductCreate = async (req, res) => {};
 
 /**----------------------
  *    CATEGORY
@@ -68,23 +84,29 @@ export const dashboardCategoryNew = async (req, res) => {
  */
 export const dashboardCategoryCreate = async (req, res) => {
   const result = validateParse(categoryCreateValidator, req.body);
+  req.session.form = req.body;
+
   if (!result.success) {
-    return res.render("pages/dashboard/category/new", {
+    req.session.form_errors = result.errors;
+    req.session.flash = {
       alert: { type: "error", message: "Data yang dimasukkan tidak valid" },
-      form_errors: result.errors,
-    });
+    };
+    return res.redirect("/dashboard/category/new");
   }
 
   const category = await createCategory(result.data);
   if (!category) {
-    return res.render("pages/dashboard/category/new", {
+    req.session.flash = {
       alert: { type: "error", message: "Gagal membuat kategori, coba lagi" },
-    });
+    };
+    return res.redirect("/dashboard/category/new");
   }
 
-  return res.render("pages/dashboard/category/new", {
+  req.session.flash = {
     alert: { type: "success", message: "Kategori berhasil dibuat" },
-  });
+  };
+
+  return res.redirect("/dashboard/category/new");
 };
 
 /**
@@ -94,9 +116,7 @@ export const dashboardCategoryEdit = async (req, res) => {
   const slug = req.params.slug;
   const category = await getCategoryBySlug(slug);
   if (!category) return res.sendStatus(404);
-  return res.render("pages/dashboard/category/edit", {
-    category,
-  });
+  return res.render("pages/dashboard/category/edit", { category });
 };
 
 /**
@@ -107,27 +127,32 @@ export const dashboardCategoryUpdate = async (req, res) => {
   const isExists = await checkCategoryExists(slug);
   if (!isExists) return res.sendStatus(404);
 
+  req.session.form = req.body;
+
   const result = validateParse(categoryCreateValidator, req.body);
   if (!result.success) {
-    return res.render("pages/dashboard/category/edit", {
+    req.session.form_errors = result.errors;
+    req.session.form = req.body;
+    req.session.flash = {
       alert: { type: "error", message: "Data yang dimasukkan tidak valid" },
-      form_errors: result.errors,
-      category: { ...req.body },
-    });
+    };
+
+    return res.redirect(`/dashboard/category/${slug}`);
   }
 
   const updated = await updateCategory(slug, result.data);
   if (!updated) {
-    return res.render("pages/dashboard/category/edit", {
+    req.session.flash = {
       alert: { type: "error", message: "Gagal memperbarui kategori, coba lagi" },
-      category: { ...req.body },
-    });
+    };
+
+    return res.redirect(`/dashboard/category/${slug}`);
   }
 
-  return res.render("pages/dashboard/category/edit", {
+  req.session.flash = {
     alert: { type: "success", message: "Kategori berhasil diperbarui" },
-    category: req.body,
-  });
+  };
+  return res.redirect(`/dashboard/category/${slug}`);
 };
 
 /**----------------------

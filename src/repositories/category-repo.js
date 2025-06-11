@@ -20,3 +20,7 @@ export const checkCategoryExists = async (slug) => {
 export const updateCategory = async (slug, data) => {
   return await Category.updateOne({ slug }, data, { runValidators: true });
 };
+
+export const getCategoriesForSelect = async () => {
+  return await Category.find().sort({ name: 1 }).select("name slug").lean();
+};

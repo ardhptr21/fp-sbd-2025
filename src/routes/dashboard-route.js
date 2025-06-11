@@ -9,6 +9,7 @@ import {
   dashboardOrder,
   dashboardPayment,
   dashboardProduct,
+  dashboardProductCreate,
   dashboardProductNew,
   dashboardProfile,
   dashboardTransaction,
@@ -21,6 +22,7 @@ router.get("/account", authenticate(), dashboardAccount);
 router.get("/profile", authenticate(["customer"]), dashboardProfile);
 
 router.get("/product", authenticate(["admin"]), dashboardProduct);
+router.post("/product/new", authenticate(["admin"]), dashboardProductCreate);
 router.get("/product/new", authenticate(["admin"]), dashboardProductNew);
 
 router.get("/category", authenticate(["admin"]), dashboardCategory);

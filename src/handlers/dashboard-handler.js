@@ -1,5 +1,6 @@
 import express from "express";
 import { validateParse } from "../lib/validator.js";
+import { createProduct, getProducts } from "../repositories/product-repo.js";
 import {
   checkCategoryExists,
   createCategory,
@@ -9,6 +10,7 @@ import {
   updateCategory,
 } from "../repositories/category-repo.js";
 import { categoryCreateValidator } from "../validators/category-validator.js";
+import { productCreateValidator } from "../validators/product-validator.js";
 
 /**----------------------
  *    PROFILE
@@ -39,8 +41,12 @@ export const dashboardAccount = (req, res) => {
 /**
  * @type {express.Handler}
  */
-export const dashboardProduct = (req, res) => {
-  return res.render("pages/dashboard/product/index");
+export const dashboardProduct = async (req, res) => {
+  const products = await getProducts();
+  console.log(products);
+  return res.render("pages/dashboard/product/index", {
+    products,
+  });
 };
 
 /**
@@ -56,7 +62,32 @@ export const dashboardProductNew = async (req, res) => {
 /**
  * @type {express.Handler}
  */
-export const dashboardProductCreate = async (req, res) => {};
+export const dashboardProductCreate = async (req, res) => {
+  const result = validateParse(productCreateValidator, req.body);
+  req.session.form = req.body;
+
+  if (!result.success) {
+    req.session.form_errors = result.errors;
+    req.session.flash = {
+      alert: { type: "error", message: "Data yang dimasukkan tidak valid" },
+    };
+    return res.redirect("/dashboard/product/new");
+  }
+
+  const product = await createProduct(result.data);
+  if (!product) {
+    req.session.flash = {
+      alert: { type: "error", message: "Gagal membuat produk, coba lagi" },
+    };
+    return res.redirect("/dashboard/product/new");
+  }
+
+  req.session.flash = {
+    alert: { type: "success", message: "Produk berhasil dibuat" },
+  };
+
+  return res.redirect("/dashboard/product/new");
+};
 
 /**----------------------
  *    CATEGORY
@@ -143,7 +174,10 @@ export const dashboardCategoryUpdate = async (req, res) => {
   const updated = await updateCategory(slug, result.data);
   if (!updated) {
     req.session.flash = {
-      alert: { type: "error", message: "Gagal memperbarui kategori, coba lagi" },
+      alert: {
+        type: "error",
+        message: "Gagal memperbarui kategori, coba lagi",
+      },
     };
 
     return res.redirect(`/dashboard/category/${slug}`);

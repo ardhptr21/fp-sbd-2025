@@ -43,7 +43,6 @@ export const dashboardAccount = (req, res) => {
  */
 export const dashboardProduct = async (req, res) => {
   const products = await getProducts();
-  console.log(products);
   return res.render("pages/dashboard/product/index", {
     products,
   });
@@ -87,6 +86,47 @@ export const dashboardProductCreate = async (req, res) => {
   };
 
   return res.redirect("/dashboard/product/new");
+};
+
+export const dashboardProductDetail = async (req, res) => {
+  const product = {
+    _id: "12345",
+    name: "Contoh Produk",
+    description: "Deskripsi produk ini adalah contoh.",
+    price: 100000,
+    stock: 50,
+    category: "Elektronik",
+    image:
+      "https://image.made-in-china.com/202f0j00gOPiJtwsiAqy/2022-New-Hot-Sale-Notebook-Laptop-Computer-F123-Global-Version-Windows10-12-3-Inch-Processor-N4125-Laptop-Notebook.webp",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  return res.render("pages/dashboard/product/detail", {
+    product,
+  });
+};
+
+export const dashboardProductEdit = async (req, res) => {
+  const categories = await getCategoriesForSelect();
+
+  const product = {
+    _id: "12345",
+    name: "Contoh Produk",
+    description: "Deskripsi produk ini adalah contoh.",
+    price: 100000,
+    stock: 50,
+    category: categories[0]._id,
+    image:
+      "https://image.made-in-china.com/202f0j00gOPiJtwsiAqy/2022-New-Hot-Sale-Notebook-Laptop-Computer-F123-Global-Version-Windows10-12-3-Inch-Processor-N4125-Laptop-Notebook.webp",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  return res.render("pages/dashboard/product/edit", {
+    categories,
+    product,
+  });
 };
 
 /**----------------------

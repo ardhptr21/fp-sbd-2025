@@ -16,28 +16,28 @@
     <div class="card card-side bg-base-200 border border-base-300 shadow-sm items-center">
       <div class="p-10">
         <figure class="w-60 aspect-[4/3] rounded-xl overflow-hidden">
-          <img class="object-cover" src="https://img.daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.webp"
-            alt="Album" />
+          <img class="object-cover" src="{{this.image}}" alt="Album" />
         </figure>
       </div>
       <div class="card-body">
         <div class="mb-5 space-y-2">
-          <h2 class="card-title">Laptop Notebook F123</h2>
+          <h2 class="card-title">{{this.name}}</h2>
           <div class="badge badge-soft badge-accent">Elektronik</div>
         </div>
         <div class="space-y-1">
-          <h3 class="text-2xl font-bold">Rp. 100000</h3>
+          <h3 class="text-2xl font-bold">Rp. {{this.price}}</h3>
           <div class="mt-5">
-            <p><span class="font-semibold">Dibuat pada:</span> 17 Juni 2025, 13:31</p>
-            <p><span class="font-semibold">Terakhir diperbarui:</span> 17 Juni 2025, 13:31</p>
+            <p><span class="font-semibold">Dibuat pada:</span> {{this.createdAt}}</p>
+            <p><span class="font-semibold">Terakhir diperbarui:</span> {{this.updatedAt}}</p>
           </div>
         </div>
         <div class="card-actions justify-end">
-          <button class="btn btn-primary">Detail</button>
+          <a href="/dashboard/product/test/edit" class="btn btn-secondary">Edit</a>
+          <a href="/dashboard/product/test" class="btn btn-primary">Detail</a>
         </div>
       </div>
     </div>
-    {{/products}}
+    {{/each}}
   </div>
 </section>
 {{/inline}}

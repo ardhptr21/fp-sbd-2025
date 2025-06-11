@@ -1,0 +1,90 @@
+{{#> "layouts/dashboard"}}
+
+{{#*inline "meta"}}
+<title>ECommerce</title>
+{{/inline}}
+
+{{#*inline "content"}}
+<section class="w-full">
+  <h1 class="text-3xl font-bold">Edit Barang</h1>
+
+  <form action="" method="POST" class="mt-10 space-y-3">
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Nama</legend>
+      <input type="text" name="name" value="{{product.name}}" class="input w-full" placeholder="Masukkan nama barang" />
+      {{> "forms/field_error" field_name="name"}}
+    </fieldset>
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Deskripsi</legend>
+      <textarea name="description" class="textarea w-full resize-none" rows="8"
+        placeholder="...">{{product.description}}</textarea>
+      {{> "forms/field_error" field_name="description"}}
+    </fieldset>
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Harga</legend>
+      <input type="number" name="price" value="{{product.price}}" class="input w-full" placeholder="Masukkan harga" />
+      {{> "forms/field_error" field_name="price"}}
+    </fieldset>
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Stok</legend>
+      <input type="number" value="{{product.stock}}" name="stock" class="input w-full"
+        placeholder="Masukkan jumlah stok" />
+      {{> "forms/field_error" field_name="sotck"}}
+    </fieldset>
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Kategori</legend>
+      <select class="select w-full" value="{{product.category}}" name="category">
+        {{#each categories}}
+        <option value="{{this._id}}">{{this.name}}</option>
+        {{/each}}
+      </select>
+      {{> "forms/field_error" field_name="category"}}
+    </fieldset>
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Gambar</legend>
+      <input type="url" name="image" value="{{product.image}}" id="image" class="input w-full"
+        placeholder="Masukkan url gambar product" />
+      <span class="label">Paste url gambar disini</span>
+      {{> "forms/field_error" field_name="image"}}
+      <div class="p-10 bg-base-200 rounded-xl text-center space-y-2" id="preview-container">
+        <figure class="overflow-hidden aspect-[4/3] rounded-xl w-80 mx-auto">
+          <img src="https://img.daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.webp"
+            class="w-full h-full bg-cover group-hover:scale-110 duration-300 object-cover" id="preview-src" />
+        </figure>
+        <p class="italic text-xs">Preview gambar</>
+      </div>
+    </fieldset>
+    {{> "commons/alert"}}
+    <button class="btn btn-primary w-full">Save</button>
+    <a class="btn w-full" href="/dashboard/product">Kembali</a>
+  </form>
+</section>
+{{/inline}}
+
+{{#*inline "script"}}
+<script>
+  const image = document.getElementById("image");
+  const previewContainer = document.getElementById("preview-container");
+  const previewSrc = document.getElementById("preview-src");
+
+  image.addEventListener("input", function () {
+    const url = this.value;
+    if (url) {
+      previewContainer.classList.remove("hidden");
+      previewSrc.src = url;
+    } else {
+      previewContainer.classList.add("hidden");
+    }
+  });
+
+  previewSrc.addEventListener("error", function () {
+    previewContainer.classList.add("hidden");
+    image.value = "";
+    alert("Gambar tidak ditemukan, silakan masukkan URL gambar yang valid.");
+  });
+
+
+</script>
+{{/inline}}
+
+{{/"layouts/dashboard"}}

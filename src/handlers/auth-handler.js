@@ -125,5 +125,7 @@ export const loggingInHandler = async (req, res) => {
   req.session.user = user;
   req.session.isAuthenticated = true;
 
-  return res.redirect("/");
+  const next = req.query.n || "/";
+
+  return res.redirect(next);
 };

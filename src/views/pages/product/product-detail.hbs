@@ -9,29 +9,26 @@
   <section class="flex flex-row justify-center gap-5 w-full">
     <div class="w-full max-w-sm sticky top-0">
       <div class="rounded-xl overflow-hidden">
-        <img src="https://images.tokopedia.net/img/cache/700/hDjmkQ/2022/10/2/4ded5587-dcee-41b8-81e4-4d638860dc8a.jpg"
-          class="w-full h-full object-cover" alt="">
+        <img src="{{product.image}}" class="w-full h-full object-cover" alt="{{product.name}}">
       </div>
     </div>
     <div class="w-full">
-      <div>
-        <h1 class="text-xl font-bold">Rucas Jeans Season 9 Black Jeans</h1>
-        <div class="badge badge-soft badge-accent">Fashion</div>
+      <div class="space-y-2">
+        <h1 class="text-xl font-bold">{{product.name}}</h1>
+        <div class="badge badge-soft badge-accent">{{product.category.name}}</div>
       </div>
       <div class="space-y-2">
-        <h3 class="text-3xl font-bold mt-5">Rp. 399000</h3>
-        <p class="text-sm text-white/60">5000 produk terjual</p>
+        <h3 class="text-3xl font-bold mt-5">Rp. {{product.price}}</h3>
+        {{!-- <p class="text-sm text-white/60">5000 produk terjual</p> --}}
       </div>
       <p class="mt-5">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem quasi adipisci molestias vitae. Saepe, quas
-        ex temporibus, minus distinctio natus nisi cupiditate ut voluptatum unde eum. Porro aspernatur cupiditate
-        enim.
+        {{product.description}}
       </p>
     </div>
     <div class="w-full max-w-2xs bg-base-300 rounded-xl p-5">
       <h4 class="font-bold text-lg">Atur Jumlah</h4>
       <div class="mt-10 space-y-2">
-        <p>Stok: <span class="font-bold">499</span></p>
+        <p>Stok: <span class="font-bold">{{product.stock}}</span></p>
         <div class="join">
           <button class="btn btn-square">-</button>
           <input type="text" class="input text-center" value="1" id="quantity">
@@ -39,7 +36,7 @@
         </div>
         <div class="flex justify-between mt-5">
           <p>Subtotal</p>
-          <p class="text-xl font-bold">Rp. 399000</p>
+          <p class="text-xl font-bold">Rp. <span id="total-price">{{product.price}}</span></p>
         </div>
         <div class="space-y-3 mt-12">
           <button class="btn btn-primary w-full">Keranjang</button>
@@ -56,23 +53,37 @@
   const quantityInput = document.getElementById('quantity');
   const incrementButton = quantityInput.nextElementSibling;
   const decrementButton = quantityInput.previousElementSibling;
+  const totalPriceEl = document.getElementById('total-price');
+  const productPrice = {{ product.price }};
+  const productStock = {{ product.stock }};
+
   incrementButton.addEventListener('click', () => {
     let currentValue = parseInt(quantityInput.value);
+    if (currentValue >= productStock) return;
     quantityInput.value = currentValue + 1;
+    totalPriceEl.textContent = (currentValue + 1) * productPrice;
   });
+
   decrementButton.addEventListener('click', () => {
     let currentValue = parseInt(quantityInput.value);
     if (currentValue > 1) {
       quantityInput.value = currentValue - 1;
+      totalPriceEl.textContent = (currentValue - 1) * productPrice;
     }
   });
+
   quantityInput.addEventListener('input', (e) => {
     const value = parseInt(e.target.value);
     if (isNaN(value) || value < 1) {
       e.target.value = 1;
       return;
     }
+    if (value > productStock) {
+      e.target.value = productStock;
+      return;
+    };
     e.target.value = value
+    totalPriceEl.textContent = value * productPrice;
   });
 </script>
 {{/inline}}

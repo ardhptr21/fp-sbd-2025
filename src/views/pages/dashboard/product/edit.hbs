@@ -11,29 +11,31 @@
   <form action="" method="POST" class="mt-10 space-y-3">
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Nama</legend>
-      <input type="text" name="name" value="{{product.name}}" class="input w-full" placeholder="Masukkan nama barang" />
+      <input type="text" name="name" value="{{or form.name product.name}}" class="input w-full"
+        placeholder="Masukkan nama barang" />
       {{> "forms/field_error" field_name="name"}}
     </fieldset>
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Deskripsi</legend>
       <textarea name="description" class="textarea w-full resize-none" rows="8"
-        placeholder="...">{{product.description}}</textarea>
+        placeholder="...">{{or form.description product.description}}</textarea>
       {{> "forms/field_error" field_name="description"}}
     </fieldset>
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Harga</legend>
-      <input type="number" name="price" value="{{product.price}}" class="input w-full" placeholder="Masukkan harga" />
+      <input type="number" name="price" value="{{or form.price product.price}}" class="input w-full"
+        placeholder="Masukkan harga" />
       {{> "forms/field_error" field_name="price"}}
     </fieldset>
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Stok</legend>
-      <input type="number" value="{{product.stock}}" name="stock" class="input w-full"
+      <input type="number" value="{{or form.stock product.stock}}" name="stock" class="input w-full"
         placeholder="Masukkan jumlah stok" />
       {{> "forms/field_error" field_name="sotck"}}
     </fieldset>
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Kategori</legend>
-      <select class="select w-full" value="{{product.category}}" name="category">
+      <select class="select w-full" value="{{or form.category product.category}}" name="category">
         {{#each categories}}
         <option value="{{this._id}}">{{this.name}}</option>
         {{/each}}
@@ -42,7 +44,7 @@
     </fieldset>
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Gambar</legend>
-      <input type="url" name="image" value="{{product.image}}" id="image" class="input w-full"
+      <input type="url" name="image" value="{{or form.image product.image}}" id="image" class="input w-full"
         placeholder="Masukkan url gambar product" />
       <span class="label">Paste url gambar disini</span>
       {{> "forms/field_error" field_name="image"}}

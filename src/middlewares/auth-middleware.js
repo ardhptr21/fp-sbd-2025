@@ -12,7 +12,7 @@ export const UserRole = {
  * @type {(roles?: RoleType[]) => import('express').Handler}
  */
 export const authenticate = (roles) => async (req, res, next) => {
-  if (!req.session.isAuthenticated) return res.redirect("/auth/login");
+  if (!req.session.isAuthenticated) return res.redirect("/auth/login?n=" + req.originalUrl);
   if (!roles || !roles.length) return next();
   if (roles.some((role) => req.session.user.role === role)) return next();
   return res.sendStatus(403);

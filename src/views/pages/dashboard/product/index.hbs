@@ -22,18 +22,18 @@
       <div class="card-body">
         <div class="mb-5 space-y-2">
           <h2 class="card-title">{{this.name}}</h2>
-          <div class="badge badge-soft badge-accent">Elektronik</div>
+          <div class="badge badge-soft badge-accent">{{this.category.name}}</div>
         </div>
         <div class="space-y-1">
           <h3 class="text-2xl font-bold">Rp. {{this.price}}</h3>
           <div class="mt-5">
-            <p><span class="font-semibold">Dibuat pada:</span> {{this.createdAt}}</p>
-            <p><span class="font-semibold">Terakhir diperbarui:</span> {{this.updatedAt}}</p>
+            <p><span class="font-semibold">Dibuat pada:</span> {{formatDate this.createdAt}}</p>
+            <p><span class="font-semibold">Terakhir diperbarui:</span> {{formatDate this.updatedAt}}</p>
           </div>
         </div>
         <div class="card-actions justify-end">
-          <a href="/dashboard/product/test/edit" class="btn btn-secondary">Edit</a>
-          <a href="/dashboard/product/test" class="btn btn-primary">Detail</a>
+          <a href="/dashboard/product/{{this._id}}/edit" class="btn btn-secondary">Edit</a>
+          <a href="/dashboard/product/{{this._id}}" class="btn btn-primary">Detail</a>
         </div>
       </div>
     </div>

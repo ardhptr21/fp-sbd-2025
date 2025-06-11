@@ -1,6 +1,12 @@
 import express from "express";
 import { validateParse } from "../lib/validator.js";
-import { createProduct, getProducts } from "../repositories/product-repo.js";
+import {
+  createProduct,
+  getProductById,
+  getProductByIdWithCategory,
+  getProducts,
+  updateProduct,
+} from "../repositories/product-repo.js";
 import {
   checkCategoryExists,
   createCategory,
@@ -89,18 +95,10 @@ export const dashboardProductCreate = async (req, res) => {
 };
 
 export const dashboardProductDetail = async (req, res) => {
-  const product = {
-    _id: "12345",
-    name: "Contoh Produk",
-    description: "Deskripsi produk ini adalah contoh.",
-    price: 100000,
-    stock: 50,
-    category: "Elektronik",
-    image:
-      "https://image.made-in-china.com/202f0j00gOPiJtwsiAqy/2022-New-Hot-Sale-Notebook-Laptop-Computer-F123-Global-Version-Windows10-12-3-Inch-Processor-N4125-Laptop-Notebook.webp",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+  const slug = req.params.slug;
+  const product = await getProductByIdWithCategory(slug);
+  console.log(product);
+  if (!product) return res.sendStatus(404);
 
   return res.render("pages/dashboard/product/detail", {
     product,
@@ -108,25 +106,51 @@ export const dashboardProductDetail = async (req, res) => {
 };
 
 export const dashboardProductEdit = async (req, res) => {
+  const slug = req.params.slug;
   const categories = await getCategoriesForSelect();
 
-  const product = {
-    _id: "12345",
-    name: "Contoh Produk",
-    description: "Deskripsi produk ini adalah contoh.",
-    price: 100000,
-    stock: 50,
-    category: categories[0]._id,
-    image:
-      "https://image.made-in-china.com/202f0j00gOPiJtwsiAqy/2022-New-Hot-Sale-Notebook-Laptop-Computer-F123-Global-Version-Windows10-12-3-Inch-Processor-N4125-Laptop-Notebook.webp",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+  const product = await getProductById(slug);
+  if (!product) return res.sendStatus(404);
+
+  req.session.form = req.body;
 
   return res.render("pages/dashboard/product/edit", {
     categories,
     product,
   });
+};
+
+export const dashboardProductUpdate = async (req, res) => {
+  const slug = req.params.slug;
+  const categories = await getCategoriesForSelect();
+
+  const product = await getProductById(slug);
+  if (!product) return res.sendStatus(404);
+
+  const result = validateParse(productCreateValidator, req.body);
+  req.session.form = req.body;
+
+  if (!result.success) {
+    req.session.form_errors = result.errors;
+    req.session.flash = {
+      alert: { type: "error", message: "Data yang dimasukkan tidak valid" },
+    };
+    return res.redirect(`/dashboard/product/${slug}/edit`);
+  }
+
+  const updated = await updateProduct(slug, result.data);
+  if (!updated) {
+    req.session.flash = {
+      alert: { type: "error", message: "Gagal mengubah produk, coba lagi" },
+    };
+    return res.redirect(`/dashboard/product/${slug}/edit`);
+  }
+
+  req.session.flash = {
+    alert: { type: "success", message: "Produk berhasil diubah" },
+  };
+
+  return res.redirect(`/dashboard/product/${slug}/edit`);
 };
 
 /**----------------------

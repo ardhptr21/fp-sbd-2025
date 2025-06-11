@@ -1,9 +1,15 @@
+import dayjs from "dayjs";
+import "dayjs/locale/id.js";
 import { create } from "express-handlebars";
+
+dayjs.locale("id");
 
 const hbs = create({
   extname: "hbs",
   defaultLayout: false,
   helpers: {
+    or: (a, b) => a || b,
+
     eq: (a, b) => a === b,
 
     get: (obj, key) => {
@@ -11,6 +17,13 @@ const hbs = create({
         return obj[key];
       }
       return undefined;
+    },
+
+    formatDate: (value, formatOrOptions) => {
+      if (!value) return "";
+      const defaultFormat = "DD MMMM YYYY, HH:mm";
+      const format = typeof formatOrOptions === "string" ? formatOrOptions : defaultFormat;
+      return dayjs(value).format(format);
     },
   },
 });

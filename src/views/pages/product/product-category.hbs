@@ -1,0 +1,34 @@
+{{#> "layouts/base"}}
+
+{{#*inline "meta"}}
+<title>ECommerce</title>
+{{/inline}}
+
+{{#*inline "content"}}
+<main class="flex flex-col justify-center items-center mt-32">
+  <section class="bg-primary/10 w-full max-w-7xl mx-auto p-10 rounded-xl">
+    <div class="space-y-2 text-center">
+      <h2 class="text-4xl font-bold">{{category.name}}</h2>
+      <p>{{category.description}}</p>
+    </div>
+  </section>
+
+  <section class="mt-10 grid grid-cols-3 gap-10 w-full max-w-7xl mx-auto">
+    {{#each products}}
+    {{> "cards/product-card"
+    img_url=this.image
+    title=this.name
+    price=this.price
+    category=../category.name
+    stock=this.stock
+    slug=this._id
+    }}
+    {{/each}}
+  </section>
+</main>
+{{/inline}}
+
+{{#*inline "script"}}
+{{/inline}}
+
+{{/"layouts/base"}}

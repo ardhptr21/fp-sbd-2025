@@ -10,7 +10,7 @@
     <h1 class="text-3xl font-bold">Detail Barang</h1>
     <div>
       <a href="/dashboard/product/" class="btn btn-primary btn-outline">Kembali</a>
-      <a href="/dashboard/product/test/edit" class="btn btn-secondary">Edit</a>
+      <a href="/dashboard/product/{{this.product._id}}/edit" class="btn btn-secondary">Edit</a>
     </div>
   </div>
 
@@ -22,7 +22,7 @@
     <div class="w-3/5">
       <div class="mb-5 space-y-2">
         <h2 class="text-2xl font-bold">{{product.name}}</h2>
-        <div class="badge badge-soft badge-accent">{{product.category}}</div>
+        <div class="badge badge-soft badge-accent">{{product.category.name}}</div>
         <p>
           {{product.description}}
         </p>
@@ -43,11 +43,11 @@
         </div>
         <div>
           <p class="font-bold">Dibuat pada</p>
-          <p>{{product.createdAt}}</p>
+          <p>{{formatDate product.createdAt}}</p>
         </div>
         <div>
           <p class="font-bold">Terakhir diperbarui</p>
-          <p>{{product.updatedAt}}</p>
+          <p>{{formatDate product.updatedAt}}</p>
         </div>
       </div>
     </div>

@@ -8,7 +8,9 @@
         <a class="btn btn-ghost">Kategori</a>
       </li>
     </ul>
-    <input type="text" placeholder="Search" class="input input-bordered w-96" />
+    <form action="/product/search" method="GET">
+      <input type="text" placeholder="Search" name="s" class="input input-bordered w-96" />
+    </form>
   </div>
   <div class="navbar-end gap-3">
     {{#if isAuthenticated}}

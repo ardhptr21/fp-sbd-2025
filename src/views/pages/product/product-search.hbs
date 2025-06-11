@@ -5,8 +5,12 @@
 {{/inline}}
 
 {{#*inline "content"}}
-<main class="flex justify-center items-center mt-32">
-  <section class="grid grid-cols-3 gap-10 w-full max-w-7xl mx-auto">
+<main class="flex flex-col justify-center items-center mt-32">
+  <section>
+    <p class="text-sm italic">Menampilkan semua barang untuk <span class="font-bold underline">"{{search}}"</span></p>
+  </section>
+
+  <section class="mt-10 grid grid-cols-3 gap-10 w-full max-w-7xl mx-auto">
     {{#each products}}
     {{> "cards/product-card"
     img_url=this.image

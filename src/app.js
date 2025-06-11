@@ -31,6 +31,7 @@ app.use((req, res, next) => {
 
   delete req.session.flash;
   delete req.session.form_errors;
+  delete req.session.form;
   next();
 });
 

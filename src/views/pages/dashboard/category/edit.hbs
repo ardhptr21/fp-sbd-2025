@@ -11,14 +11,14 @@
   <form action="" method="POST" class="mt-10 space-y-3">
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Nama</legend>
-      <input type="text" name="name" value="{{category.name}}" class="input w-full"
+      <input type="text" name="name" value="{{or form.name category.name}}" class="input w-full"
         placeholder="Masukkan nama kategori" />
       {{> "forms/field_error" field_name="name"}}
     </fieldset>
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Deskripsi</legend>
       <textarea name="description" class="textarea w-full resize-none" rows="8"
-        placeholder="...">{{category.description}}</textarea>
+        placeholder="...">{{or form.description category.description}}</textarea>
       {{> "forms/field_error" field_name="description"}}
     </fieldset>
     {{> "commons/alert"}}

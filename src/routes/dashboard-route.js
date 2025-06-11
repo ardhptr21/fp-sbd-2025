@@ -13,6 +13,7 @@ import {
   dashboardProductDetail,
   dashboardProductEdit,
   dashboardProductNew,
+  dashboardProductUpdate,
   dashboardProfile,
   dashboardTransaction,
 } from "../handlers/dashboard-handler.js";
@@ -28,6 +29,7 @@ router.post("/product/new", authenticate(["admin"]), dashboardProductCreate);
 router.get("/product/new", authenticate(["admin"]), dashboardProductNew);
 router.get("/product/:slug", authenticate(["admin"]), dashboardProductDetail);
 router.get("/product/:slug/edit", authenticate(["admin"]), dashboardProductEdit);
+router.post("/product/:slug/edit", authenticate(["admin"]), dashboardProductUpdate);
 
 router.get("/category", authenticate(["admin"]), dashboardCategory);
 router.get("/category/new", authenticate(["admin"]), dashboardCategoryNew);

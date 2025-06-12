@@ -21,7 +21,10 @@
           <p class="text-xl font-bold">Rp. <span id="total-price-cart">{{total_price}}</span></p>
         </div>
         <div class="divider"></div>
-        <button class="btn btn-primary w-full">Beli</button>
+        {{> "commons/alert"}}
+        <form action="/checkout" method="POST" class="mt-2">
+          <button type="submit" class="btn btn-primary w-full">Checkout Sekarang</button>
+        </form>
       </div>
     </div>
   </section>

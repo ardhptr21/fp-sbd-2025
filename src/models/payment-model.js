@@ -2,20 +2,16 @@ import mongoose from "mongoose";
 
 const schema = new mongoose.Schema(
   {
-    payment_method: {
+    payment_proof: {
       type: String,
-      required: true,
-      trim: true,
+      required: false,
+      default: null,
     },
     status: {
       type: String,
       required: true,
       enum: ["pending", "paid", "failed"],
       default: "pending",
-    },
-    payment_date: {
-      type: Date,
-      required: true,
     },
     transaction: {
       type: mongoose.Schema.Types.ObjectId,

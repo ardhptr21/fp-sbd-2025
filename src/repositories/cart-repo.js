@@ -23,3 +23,7 @@ export const updateCart = async (userId, productId, quantity) => {
     { runValidators: true }
   );
 };
+
+export const makeEmptyCart = async (userId) => {
+  return await Cart.deleteMany({ user: userId });
+};

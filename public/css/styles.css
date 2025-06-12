@@ -7,12 +7,14 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --color-red-500: oklch(63.7% 0.237 25.331);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
     --container-2xs: 18rem;
     --container-xs: 20rem;
     --container-sm: 24rem;
+    --container-lg: 32rem;
     --container-xl: 36rem;
     --container-7xl: 80rem;
     --text-xs: 0.75rem;
@@ -31,6 +33,7 @@
     --text-4xl--line-height: calc(2.5 / 2.25);
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
+    --font-weight-black: 900;
     --radius-xl: 0.75rem;
     --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
@@ -186,48 +189,6 @@
   }
 }
 @layer utilities {
-  .drawer-side {
-    pointer-events: none;
-    visibility: hidden;
-    position: fixed;
-    inset-inline-start: calc(0.25rem * 0);
-    top: calc(0.25rem * 0);
-    z-index: 1;
-    grid-column-start: 1;
-    grid-row-start: 1;
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    grid-template-rows: repeat(1, minmax(0, 1fr));
-    align-items: flex-start;
-    justify-items: start;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    overscroll-behavior: contain;
-    opacity: 0%;
-    transition: opacity 0.2s ease-out 0.1s allow-discrete, visibility 0.3s ease-out 0.1s allow-discrete;
-    height: 100vh;
-    height: 100dvh;
-    > .drawer-overlay {
-      position: sticky;
-      top: calc(0.25rem * 0);
-      cursor: pointer;
-      place-self: stretch;
-      background-color: oklch(0% 0 0 / 40%);
-    }
-    > * {
-      grid-column-start: 1;
-      grid-row-start: 1;
-    }
-    > *:not(.drawer-overlay) {
-      will-change: transform;
-      transition: translate 0.3s ease-out;
-      translate: -100%;
-      [dir="rtl"] & {
-        translate: 100%;
-      }
-    }
-  }
   .drawer-open {
     > .drawer-side {
       overflow-y: auto;
@@ -257,28 +218,6 @@
         pointer-events: auto;
         visibility: visible;
       }
-    }
-  }
-  .drawer-toggle {
-    position: fixed;
-    height: calc(0.25rem * 0);
-    width: calc(0.25rem * 0);
-    appearance: none;
-    opacity: 0%;
-    &:checked {
-      & ~ .drawer-side {
-        pointer-events: auto;
-        visibility: visible;
-        overflow-y: auto;
-        opacity: 100%;
-        & > *:not(.drawer-overlay) {
-          translate: 0%;
-        }
-      }
-    }
-    &:focus-visible ~ .drawer-content label.drawer-button {
-      outline: 2px solid;
-      outline-offset: 2px;
     }
   }
   .menu {
@@ -1581,6 +1520,9 @@
       }
     }
   }
+  .mt-2 {
+    margin-top: calc(var(--spacing) * 2);
+  }
   .mt-3 {
     margin-top: calc(var(--spacing) * 3);
   }
@@ -1928,6 +1870,22 @@
       object-fit: cover;
     }
   }
+  .divider-horizontal {
+    --divider-m: 0 1rem;
+    &.divider {
+      height: auto;
+      width: calc(0.25rem * 4);
+      flex-direction: column;
+      &:before {
+        height: 100%;
+        width: calc(0.25rem * 0.5);
+      }
+      &:after {
+        height: 100%;
+        width: calc(0.25rem * 0.5);
+      }
+    }
+  }
   .btn-circle {
     border-radius: calc(infinity * 1px);
     padding-inline: calc(0.25rem * 0);
@@ -1966,6 +1924,9 @@
   .w-5 {
     width: calc(var(--spacing) * 5);
   }
+  .w-20 {
+    width: calc(var(--spacing) * 20);
+  }
   .w-32 {
     width: calc(var(--spacing) * 32);
   }
@@ -1992,6 +1953,9 @@
   }
   .max-w-7xl {
     max-width: var(--container-7xl);
+  }
+  .max-w-lg {
+    max-width: var(--container-lg);
   }
   .max-w-sm {
     max-width: var(--container-sm);
@@ -2293,16 +2257,28 @@
   .text-base-content {
     color: var(--color-base-content);
   }
-  .text-base-content\/20 {
-    color: var(--color-base-content);
-    @supports (color: color-mix(in lab, red, red)) {
-      color: color-mix(in oklab, var(--color-base-content) 20%, transparent);
-    }
-  }
   .text-base-content\/40 {
     color: var(--color-base-content);
     @supports (color: color-mix(in lab, red, red)) {
       color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+    }
+  }
+  .text-base-content\/50 {
+    color: var(--color-base-content);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+    }
+  }
+  .text-base-content\/60 {
+    color: var(--color-base-content);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+    }
+  }
+  .text-base-content\/75 {
+    color: var(--color-base-content);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-base-content) 75%, transparent);
     }
   }
   .text-error {
@@ -2310,6 +2286,9 @@
   }
   .text-info {
     color: var(--color-info);
+  }
+  .text-primary {
+    color: var(--color-primary);
   }
   .text-white {
     color: var(--color-white);
@@ -2380,10 +2359,6 @@
     --tw-duration: 300ms;
     transition-duration: 300ms;
   }
-  .ease-in-out {
-    --tw-ease: var(--ease-in-out);
-    transition-timing-function: var(--ease-in-out);
-  }
   .btn-outline {
     &:not( .btn-active, :hover, :active:focus, :focus-visible, :disabled, [disabled], .btn-disabled, :checked ) {
       --btn-shadow: "";
@@ -2410,6 +2385,22 @@
   .badge-accent {
     --badge-color: var(--color-accent);
     --badge-fg: var(--color-accent-content);
+  }
+  .badge-error {
+    --badge-color: var(--color-error);
+    --badge-fg: var(--color-error-content);
+  }
+  .badge-info {
+    --badge-color: var(--color-info);
+    --badge-fg: var(--color-info-content);
+  }
+  .badge-success {
+    --badge-color: var(--color-success);
+    --badge-fg: var(--color-success-content);
+  }
+  .badge-warning {
+    --badge-color: var(--color-warning);
+    --badge-fg: var(--color-warning-content);
   }
   .btn-error {
     --btn-color: var(--color-error);
@@ -2823,10 +2814,6 @@
   syntax: "*";
   inherits: false;
 }
-@property --tw-ease {
-  syntax: "*";
-  inherits: false;
-}
 @property --tw-scale-x {
   syntax: "*";
   inherits: false;
@@ -2877,7 +2864,6 @@
       --tw-drop-shadow-alpha: 100%;
       --tw-drop-shadow-size: initial;
       --tw-duration: initial;
-      --tw-ease: initial;
       --tw-scale-x: 1;
       --tw-scale-y: 1;
       --tw-scale-z: 1;

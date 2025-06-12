@@ -1,0 +1,78 @@
+{{#> "layouts/base"}}
+
+{{#*inline "meta"}}
+<title>ECommerce</title>
+{{/inline}}
+
+{{#*inline "content"}}
+<main class="mt-32">
+  <section class="max-w-7xl mx-auto">
+    <h1 class="text-3xl font-bold">Detail Transaksi</h1>
+    <div class="mt-5 max-w-lg space-y-3">
+      <div class="flex justify-between">
+        <p class="text-base-content/50">ID Transaksi</p>
+        <p class="text-primary font-bold">{{transaction._id}}</p>
+      </div>
+      <div class="flex justify-between">
+        <p class="text-base-content/50">Tanggal Transaksi</p>
+        <p>{{formatDate transaction.createdAt}}</p>
+      </div>
+      <div class="flex justify-between">
+        <p class="text-base-content/50">Status Transaksi</p>
+        {{#if (eq transaction.status "pending")}}
+        <div class="badge badge-warning">Pending</div>
+        {{else if (eq transaction.status "completed")}}
+        <div class="badge badge-success">Sukses</div>
+        {{else if (eq transaction.status "cancelled")}}
+        <div class="badge badge-error">Dibatalkan</div>
+        {{/if}}
+      </div>
+    </div>
+    <div class="divider"></div>
+  </section>
+  <section class="max-w-7xl mx-auto mt-10 flex items-start gap-5">
+    <div class="w-3/5">
+      <div class="space-y-5">
+        {{#each orders}}
+        {{> "cards/transaction-product-card" product=this.product quantity=this.quantity}}
+        {{/each}}
+      </div>
+      <div class="divider"></div>
+      <div class="text-right space-y-2">
+        <h5 class="text-lg font-semibold text-base-content/75">Total Belanja</h5>
+        <h6 class="text-2xl font-bold">Rp. {{transaction.total_price}}</h6>
+      </div>
+    </div>
+    <div class="divider divider-horizontal"></div>
+    <div class="w-2/5 p-5 bg-base-200 rounded-xl">
+      <h2 class="text-xl font-bold">Pembayaran</h2>
+      <div class="flex justify-between mt-3">
+        <p class="text-base-content/50">Status</p>
+        {{#if (eq payment.status "pending")}}
+        <div class="badge badge-warning">Pending</div>
+        {{else if (eq payment.status "completed")}}
+        <div class="badge badge-success">Sukses</div>
+        {{else if (eq payment.status "cancelled")}}
+        <div class="badge badge-error">Dibatalkan</div>
+        {{/if}}
+      </div>
+      <div class="divider"></div>
+      {{#unless (eq payment.status "completed")}}
+      <form action="" class="space-y-3">
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">Bukti Pembayaran</legend>
+          <input type="text" class="input w-full" placeholder="Masukkan link bukti pembayaran anda" />
+          <p class="label">*link harus berupa gambar bukti pembayaran</p>
+        </fieldset>
+        <button class="btn btn-primary w-full">Bayar</button>
+      </form>
+      {{/unless}}
+    </div>
+  </section>
+</main>
+{{/inline}}
+
+{{#*inline "script"}}
+{{/inline}}
+
+{{/"layouts/base"}}

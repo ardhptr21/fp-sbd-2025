@@ -51,12 +51,16 @@ import baseRoute from "./routes/base-route.js";
 import cartRoute from "./routes/cart-route.js";
 import dashboardRoute from "./routes/dashboard-route.js";
 import productRoute from "./routes/product-route.js";
+import transactionRoute from "./routes/transaction-route.js";
+import checkoutRoute from "./routes/checkout-route.js";
 
 app.use("/", baseRoute);
 app.use("/auth", authRoute);
 app.use("/product", productRoute);
 app.use("/dashboard", dashboardRoute);
 app.use("/cart", cartRoute);
+app.use("/transaction", transactionRoute);
+app.use("/checkout", checkoutRoute);
 
 connectDB(() => {
   app.listen(env.app.port, env.app.host, () =>

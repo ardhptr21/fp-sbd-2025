@@ -1,11 +1,8 @@
 import mongoose from "mongoose";
+import { Payment } from "./payment-model.js";
 
 const schema = new mongoose.Schema(
   {
-    transaction_date: {
-      type: Date,
-      required: true,
-    },
     total_price: {
       type: Number,
       required: true,
@@ -27,5 +24,10 @@ const schema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+schema.post("save", async (doc, next) => {
+  await Payment.create({ transaction: doc._id });
+  next();
+});
 
 export const Transaction = mongoose.model("Transaction", schema);

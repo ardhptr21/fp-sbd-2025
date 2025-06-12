@@ -97,7 +97,6 @@ export const dashboardProductCreate = async (req, res) => {
 export const dashboardProductDetail = async (req, res) => {
   const slug = req.params.slug;
   const product = await getProductByIdWithCategory(slug);
-  console.log(product);
   if (!product) return res.sendStatus(404);
 
   return res.render("pages/dashboard/product/detail", {

@@ -57,15 +57,19 @@
         {{/if}}
       </div>
       <div class="divider"></div>
+      {{> "commons/alert"}}
       {{#unless (eq payment.status "completed")}}
-      <form action="" class="space-y-3">
+      <form action="/transaction/{{transaction._id}}/confirm-payment" method="POST" class="space-y-3 mt-3">
         <fieldset class="fieldset">
           <legend class="fieldset-legend">Bukti Pembayaran</legend>
-          <input type="text" class="input w-full" placeholder="Masukkan link bukti pembayaran anda" />
+          <input type="text" name="payment_proof" class="input w-full"
+            placeholder="Masukkan link bukti pembayaran anda" />
           <p class="label">*link harus berupa gambar bukti pembayaran</p>
         </fieldset>
         <button class="btn btn-primary w-full">Bayar</button>
       </form>
+      {{else}}
+      <img class="w-full rounded-xl" src="{{payment.payment_proof}}" alt="payment proof">
       {{/unless}}
     </div>
   </section>

@@ -23,3 +23,23 @@ export const getDetailTransaction = async (req, res) => {
     payment,
   });
 };
+
+/**
+ * @type {import('express').Handler}
+ */
+export const confirmTransactionPayment = async (req, res) => {
+  const referer = req.get("referer") || "/";
+
+  /**
+   * TODO: implement payment confirm
+   * Step
+   * 1. check id transaksi + usernya sesuai
+   * 2. check dulu status transaksinya udah dibayar apa belum
+   * 3. kalo udah dibayar, langsung redirect sambil kasih alert error aja
+   * 4. kalo belom bayar update payment_proof nya dan set status nya jadi paid
+   * 5. kasih pesan success
+   * 6. redirect (pake referer)
+   */
+
+  return res.redirect(referer);
+};

@@ -1,5 +1,9 @@
 import { getOrderByTransaction } from "../repositories/order-repo.js";
-import { getPaymentByTransaction } from "../repositories/payment-repo.js";
+import {
+  getPaymentByTransaction,
+  updatePaymentProof,
+  updatePaymentStatus,
+} from "../repositories/payment-repo.js";
 import { getTransactionBelongsToUser } from "../repositories/transaction-repo.js";
 
 /**
@@ -28,18 +32,51 @@ export const getDetailTransaction = async (req, res) => {
  * @type {import('express').Handler}
  */
 export const confirmTransactionPayment = async (req, res) => {
+  const { id } = req.params;
+  const { user } = req.session;
   const referer = req.get("referer") || "/";
+  const transaction = await getTransactionBelongsToUser(user._id, id);
 
-  /**
-   * TODO: implement payment confirm
-   * Step
-   * 1. check id transaksi + usernya sesuai
-   * 2. check dulu status transaksinya udah dibayar apa belum
-   * 3. kalo udah dibayar, langsung redirect sambil kasih alert error aja
-   * 4. kalo belom bayar update payment_proof nya dan set status nya jadi paid
-   * 5. kasih pesan success
-   * 6. redirect (pake referer)
-   */
+  if (!transaction) {
+    req.session.flash = {
+      alert: { type: "error", message: "Transaksi tidak ditemukan." },
+    };
+    return res.redirect(referer);
+  }
 
+  if (transaction.status == "paid") {
+    req.session.flash = {
+      alert: { type: "error", message: "Transaksi ini sudah dibayar." },
+    };
+    return res.redirect(referer);
+  }
+
+  try {
+    const { payment_proof } = req.body;
+    const payment = await getPaymentByTransaction(transaction._id);
+
+    if (!payment) {
+      req.session.flash = {
+        alert: { type: "error", message: "Data pembayaran tidak ditemukan." },
+      };
+      return res.redirect(referer);
+    }
+
+    await Promise.all([
+      updatePaymentProof(payment._id, payment_proof),
+      updatePaymentStatus(payment._id, "paid"),
+    ]);
+    req.session.flash = {
+      alert: { type: "success", message: "Pembayaran berhasil dikonfirmasi." },
+    };
+  } catch (err) {
+    console.error("Gagal konfirmasi pembayaran:", err);
+    req.session.flash = {
+      alert: {
+        type: "error",
+        message: "Terjadi kesalahan saat memproses pembayaran.",
+      },
+    };
+  }
   return res.redirect(referer);
 };

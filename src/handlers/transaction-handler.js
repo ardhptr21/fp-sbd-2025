@@ -70,7 +70,6 @@ export const confirmTransactionPayment = async (req, res) => {
       alert: { type: "success", message: "Pembayaran berhasil dikonfirmasi." },
     };
   } catch (err) {
-    console.error("Gagal konfirmasi pembayaran:", err);
     req.session.flash = {
       alert: {
         type: "error",

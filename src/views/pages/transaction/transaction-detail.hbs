@@ -5,7 +5,7 @@
 {{/inline}}
 
 {{#*inline "content"}}
-<main class="mt-32">
+<main class="mt-32 mb-16">
   <section class="max-w-7xl mx-auto">
     <h1 class="text-3xl font-bold">Detail Transaksi</h1>
     <div class="mt-5 max-w-lg space-y-3">
@@ -30,8 +30,8 @@
     </div>
     <div class="divider"></div>
   </section>
-  <section class="max-w-7xl mx-auto mt-10 flex items-start gap-5">
-    <div class="w-3/5">
+  <section class="max-w-7xl mx-auto flex items-start gap-5">
+    <div class="w-3/5 sticky top-32">
       <div class="space-y-5">
         {{#each orders}}
         {{> "cards/transaction-product-card" product=this.product quantity=this.quantity}}
@@ -50,26 +50,27 @@
         <p class="text-base-content/50">Status</p>
         {{#if (eq payment.status "pending")}}
         <div class="badge badge-warning">Pending</div>
-        {{else if (eq payment.status "completed")}}
-        <div class="badge badge-success">Sukses</div>
-        {{else if (eq payment.status "cancelled")}}
-        <div class="badge badge-error">Dibatalkan</div>
+        {{else if (eq payment.status "paid")}}
+        <div class="badge badge-success">Paid</div>
+        {{else if (eq payment.status "failed")}}
+        <div class="badge badge-error">Gagal</div>
         {{/if}}
       </div>
       <div class="divider"></div>
       {{> "commons/alert"}}
-      {{#unless (eq payment.status "completed")}}
+      {{#unless (eq payment.status "paid")}}
       <form action="/transaction/{{transaction._id}}/confirm-payment" method="POST" class="space-y-3 mt-3">
         <fieldset class="fieldset">
           <legend class="fieldset-legend">Bukti Pembayaran</legend>
-          <input type="text" name="payment_proof" class="input w-full"
-            placeholder="Masukkan link bukti pembayaran anda" />
+          <input type="text" name="payment_proof" class="input w-full" placeholder="Masukkan link bukti pembayaran anda"
+            id="payment-proof" />
           <p class="label">*link harus berupa gambar bukti pembayaran</p>
         </fieldset>
         <button class="btn btn-primary w-full">Bayar</button>
       </form>
+      <img class="w-full rounded-xl hidden mt-3" alt="preview" id="preview-payment-proof">
       {{else}}
-      <img class="w-full rounded-xl" src="{{payment.payment_proof}}" alt="payment proof">
+      <img class="w-full rounded-xl mt-3" src="{{payment.payment_proof}}" alt="payment proof">
       {{/unless}}
     </div>
   </section>
@@ -77,6 +78,25 @@
 {{/inline}}
 
 {{#*inline "script"}}
+<script>
+  const paymentProofInput = document.getElementById('payment-proof');
+  const previewPaymentProof = document.getElementById('preview-payment-proof');
+
+  paymentProofInput.addEventListener('input', function () {
+    const value = paymentProofInput.value.trim();
+    if (value) {
+      previewPaymentProof.src = value;
+      previewPaymentProof.classList.remove('hidden');
+    } else {
+      previewPaymentProof.classList.add('hidden');
+    }
+  });
+
+  previewPaymentProof.addEventListener('error', function () {
+    previewPaymentProof.classList.add('hidden');
+    alert('Gagal memuat gambar. Pastikan link yang dimasukkan benar dan mengarah ke gambar.');
+  });
+</script>
 {{/inline}}
 
 {{/"layouts/base"}}

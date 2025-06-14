@@ -35,9 +35,10 @@
     </fieldset>
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Kategori</legend>
-      <select class="select w-full" value="{{or form.category product.category}}" name="category">
+      <select class="select w-full" name="category">
         {{#each categories}}
-        <option value="{{this._id}}">{{this.name}}</option>
+        <option {{ternary (eq (or ../form.category ../product.category) this._id) 'selected' '' }} value="{{this._id}}">
+          {{this.name}}</option>
         {{/each}}
       </select>
       {{> "forms/field_error" field_name="category"}}
@@ -50,7 +51,7 @@
       {{> "forms/field_error" field_name="image"}}
       <div class="p-10 bg-base-200 rounded-xl text-center space-y-2" id="preview-container">
         <figure class="overflow-hidden aspect-[4/3] rounded-xl w-80 mx-auto">
-          <img src="https://img.daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.webp"
+          <img src="{{or form.image product.image}}"
             class="w-full h-full bg-cover group-hover:scale-110 duration-300 object-cover" id="preview-src" />
         </figure>
         <p class="italic text-xs">Preview gambar</>

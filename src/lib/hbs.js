@@ -12,7 +12,13 @@ const hbs = create({
 
     or: (a, b) => a || b,
 
-    eq: (a, b) => a === b,
+    ternary: (condition, trueValue, falseValue) => (condition ? trueValue : falseValue),
+    eq: (a, b) => {
+      if (typeof a === "object" && typeof b === "object") {
+        return JSON.stringify(a) === JSON.stringify(b);
+      }
+      return a === b;
+    },
 
     get: (obj, key) => {
       if (typeof obj === "object" && obj !== null && key in obj) {

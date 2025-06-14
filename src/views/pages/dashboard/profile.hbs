@@ -11,27 +11,29 @@
     <form action="/dashboard/profile" method="POST" class="space-y-3">
       <fieldset class="fieldset">
         <legend class="fieldset-legend">Nama</legend>
-        <input type="text" name="full_name" class="input w-full" placeholder="Masukkan nama lengkap" />
+        <input type="text" value="{{profile.full_name}}" name="full_name" class="input w-full"
+          placeholder="Masukkan nama lengkap" />
         {{> "forms/field_error" field_name="full_name"}}
       </fieldset>
       <fieldset class="fieldset">
         <legend class="fieldset-legend">No. Telepon</legend>
-        <input type="text" name="phone" class="input w-full" placeholder="Masukkan nomor telepon" />
+        <input type="text" value="{{profile.full_name}}" name="phone" class="input w-full"
+          placeholder="Masukkan nomor telepon" />
         {{> "forms/field_error" field_name="phone"}}
       </fieldset>
       <fieldset class="fieldset">
         <legend class="fieldset-legend">Alamat</legend>
-        <input type="text" name="address" class="input w-full" placeholder="Masukkan alamat" />
+        <textarea name="address" class="textarea w-full" placeholder="Masukkan alamat">{{profile.address}}</textarea>
         {{> "forms/field_error" field_name="address"}}
       </fieldset>
       <fieldset class="fieldset">
         <legend class="fieldset-legend">Tanggal Lahir</legend>
-        <input type="date" name="date_of_birth" class="input w-full" />
+        <input type="date" name="date_of_birth" class="input w-full" value="{{profile.date_of_birth}}" />
         {{> "forms/field_error" field_name="date_of_birth"}}
       </fieldset>
       <fieldset class="fieldset">
         <legend class="fieldset-legend">Jenis Kelamin</legend>
-        <select class="select w-full" name="gender">
+        <select class="select w-full" value="{{profile.gender}}" name="gender">
           <option disabled selected>Pilih</option>
           <option value="male">Laki - laki</option>
           <option value="female">Perempuan</option>

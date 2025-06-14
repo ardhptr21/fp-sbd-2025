@@ -13,12 +13,13 @@
     <form action="/dashboard/account/update-info" method="POST" class="space-y-3">
       <fieldset class="fieldset">
         <legend class="fieldset-legend">Username</legend>
-        <input type="text" name="username" class="input w-full" placeholder="Masukkan username" />
+        <input type="text" name="username" value="{{user.username}}" class="input w-full"
+          placeholder="Masukkan username" />
         {{> "forms/field_error" field_name="username"}}
       </fieldset>
       <fieldset class="fieldset">
         <legend class="fieldset-legend">Email</legend>
-        <input type="text" name="email" class="input w-full" placeholder="Masukkan email" />
+        <input type="text" name="email" value="{{user.email}}" class="input w-full" placeholder="Masukkan email" />
         {{> "forms/field_error" field_name="email"}}
       </fieldset>
       {{> "commons/alert" }}

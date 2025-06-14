@@ -17,6 +17,7 @@ import {
 } from "../repositories/product-repo.js";
 import { categoryCreateValidator } from "../validators/category-validator.js";
 import { productCreateValidator } from "../validators/product-validator.js";
+import { getProfileByUser } from "../repositories/profile-repo.js";
 
 /**----------------------
  *    PROFILE
@@ -25,12 +26,11 @@ import { productCreateValidator } from "../validators/product-validator.js";
 /**
  * @type {express.Handler}
  */
-export const dashboardProfile = (req, res) => {
-  /**
-   * TODO: send current session user profile data to the view
-   * Hint: fetch the profile belongs to current session user id
-   */
-  return res.render("pages/dashboard/profile");
+export const dashboardProfile = async (req, res) => {
+  const profile = await getProfileByUser(req.session.user._id);
+  return res.render("pages/dashboard/profile", {
+    profile,
+  });
 };
 
 /**
@@ -59,10 +59,6 @@ export const dashboardProfileUpdate = (req, res) => {
  * @type {express.Handler}
  */
 export const dashboardAccount = (req, res) => {
-  /**
-   * TODO: send current session user data to the view
-   */
-
   return res.render("pages/dashboard/account");
 };
 

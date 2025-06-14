@@ -1,13 +1,6 @@
 import express from "express";
 import { validateParse } from "../lib/validator.js";
 import {
-  createProduct,
-  getProductById,
-  getProductByIdWithCategory,
-  getProducts,
-  updateProduct,
-} from "../repositories/product-repo.js";
-import {
   checkCategoryExists,
   createCategory,
   getCategories,
@@ -15,6 +8,13 @@ import {
   getCategoryBySlug,
   updateCategory,
 } from "../repositories/category-repo.js";
+import {
+  createProduct,
+  getProductById,
+  getProductByIdWithCategory,
+  getProducts,
+  updateProduct,
+} from "../repositories/product-repo.js";
 import { categoryCreateValidator } from "../validators/category-validator.js";
 import { productCreateValidator } from "../validators/product-validator.js";
 
@@ -26,6 +26,28 @@ import { productCreateValidator } from "../validators/product-validator.js";
  * @type {express.Handler}
  */
 export const dashboardProfile = (req, res) => {
+  /**
+   * TODO: send current session user profile data to the view
+   * Hint: fetch the profile belongs to current session user id
+   */
+  return res.render("pages/dashboard/profile");
+};
+
+/**
+ * @type {express.Handler}
+ */
+export const dashboardProfileUpdate = (req, res) => {
+  /**
+   * TODO: Implement change profile functionality
+   * Body: (full_name, date_of_birth, address, phone, gender)
+   * Step:
+   * 1. validate if full_name, date_of_birth, address, phone, gender are valid
+   * 2. make sure phone is unique (not duplicate)
+   * 3. if phone same as current then skip validation
+   * 4. update profile in database
+   * 5. redirect to profile page with success message
+   * 6. if error, redirect back with error message
+   */
   return res.render("pages/dashboard/profile");
 };
 
@@ -37,7 +59,49 @@ export const dashboardProfile = (req, res) => {
  * @type {express.Handler}
  */
 export const dashboardAccount = (req, res) => {
+  /**
+   * TODO: send current session user data to the view
+   */
+
   return res.render("pages/dashboard/account");
+};
+
+/**
+ * @type {express.Handler}
+ */
+export const dashboardAccountUpdateInfo = (req, res) => {
+  /**
+   * TODO: Implement change account info functionality
+   * Body: (username, email)
+   * Step:
+   * 1. validate if username, email are valid
+   * 2. make sure username and email are unique (not duplicate)
+   * 3. if username and email same as current then skip validation
+   * 4. update user info in database
+   * 5. redirect to account page with success message
+   * 6. if error, redirect back with error message
+   */
+
+  return res.redirect("/dashboard/account");
+};
+
+/**
+ * @type {express.Handler}
+ */
+export const dashboardAccountUpdatePassword = (req, res) => {
+  /**
+   * TODO: Implement change password functionality
+   * Body: (old_password, new_password)
+   * Step:
+   * 1. validate if old_password is correct, if not redirect back with error
+   * 2. validate new_password (min length, etc)
+   * 3. update password in database
+   * 4. logout user from session (destroy session)
+   * 5. redirect to login page with success message
+   * 6. if error, redirect back with error message
+   */
+
+  return res.redirect("/dashboard/account");
 };
 
 /**----------------------
@@ -260,7 +324,14 @@ export const dashboardCategoryUpdate = async (req, res) => {
  * @type {express.Handler}
  */
 export const dashboardOrder = (req, res) => {
-  return res.render("pages/dashboard/order");
+  return res.render("pages/dashboard/order/index");
+};
+
+/**
+ * @type {express.Handler}
+ */
+export const dashboardOrderDetail = (req, res) => {
+  return res.render("pages/dashboard/order/detail");
 };
 
 /**----------------------

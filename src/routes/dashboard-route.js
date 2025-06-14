@@ -1,12 +1,15 @@
 import { Router } from "express";
 import {
   dashboardAccount,
+  dashboardAccountUpdateInfo,
+  dashboardAccountUpdatePassword,
   dashboardCategory,
   dashboardCategoryCreate,
   dashboardCategoryEdit,
   dashboardCategoryNew,
   dashboardCategoryUpdate,
   dashboardOrder,
+  dashboardOrderDetail,
   dashboardPayment,
   dashboardProduct,
   dashboardProductCreate,
@@ -15,6 +18,7 @@ import {
   dashboardProductNew,
   dashboardProductUpdate,
   dashboardProfile,
+  dashboardProfileUpdate,
   dashboardTransaction,
 } from "../handlers/dashboard-handler.js";
 import { authenticate } from "../middlewares/auth-middleware.js";
@@ -22,7 +26,11 @@ import { authenticate } from "../middlewares/auth-middleware.js";
 const router = Router();
 
 router.get("/account", authenticate(), dashboardAccount);
+router.post("/account/update-info", authenticate(), dashboardAccountUpdateInfo);
+router.post("/account/update-password", authenticate(), dashboardAccountUpdatePassword);
+
 router.get("/profile", authenticate(["customer"]), dashboardProfile);
+router.post("/profile", authenticate(["customer"]), dashboardProfileUpdate);
 
 router.get("/product", authenticate(["admin"]), dashboardProduct);
 router.post("/product/new", authenticate(["admin"]), dashboardProductCreate);
@@ -36,7 +44,9 @@ router.get("/category/new", authenticate(["admin"]), dashboardCategoryNew);
 router.post("/category/new", authenticate(["admin"]), dashboardCategoryCreate);
 router.get("/category/:slug", authenticate(["admin"]), dashboardCategoryEdit);
 router.post("/category/:slug", authenticate(["admin"]), dashboardCategoryUpdate);
+
 router.get("/order", authenticate(["admin"]), dashboardOrder);
+router.get("/order/:id", authenticate(["admin"]), dashboardOrderDetail);
 
 router.get("/transaction", authenticate(["customer"]), dashboardTransaction);
 router.get("/payment", authenticate(["customer"]), dashboardPayment);

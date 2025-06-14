@@ -8,31 +8,37 @@
 <section class="w-full">
   <h1 class="text-3xl font-bold">Profil Pengguna</h1>
   <div class="mt-10 bg-base-200 p-10 rounded-xl">
-    <form action="" class="space-y-3">
+    <form action="/dashboard/profile" method="POST" class="space-y-3">
       <fieldset class="fieldset">
         <legend class="fieldset-legend">Nama</legend>
-        <input type="text" class="input w-full" placeholder="Masukkan nama lengkap" />
+        <input type="text" name="full_name" class="input w-full" placeholder="Masukkan nama lengkap" />
+        {{> "forms/field_error" field_name="full_name"}}
       </fieldset>
       <fieldset class="fieldset">
         <legend class="fieldset-legend">No. Telepon</legend>
-        <input type="text" class="input w-full" placeholder="Masukkan nomor telepon" />
+        <input type="text" name="phone" class="input w-full" placeholder="Masukkan nomor telepon" />
+        {{> "forms/field_error" field_name="phone"}}
       </fieldset>
       <fieldset class="fieldset">
         <legend class="fieldset-legend">Alamat</legend>
-        <input type="text" class="input w-full" placeholder="Masukkan alamat" />
+        <input type="text" name="address" class="input w-full" placeholder="Masukkan alamat" />
+        {{> "forms/field_error" field_name="address"}}
       </fieldset>
       <fieldset class="fieldset">
         <legend class="fieldset-legend">Tanggal Lahir</legend>
-        <input type="date" class="input w-full" />
+        <input type="date" name="date_of_birth" class="input w-full" />
+        {{> "forms/field_error" field_name="date_of_birth"}}
       </fieldset>
       <fieldset class="fieldset">
         <legend class="fieldset-legend">Jenis Kelamin</legend>
-        <select class="select w-full">
+        <select class="select w-full" name="gender">
           <option disabled selected>Pilih</option>
-          <option>Laki - laki</option>
-          <option>Perempuan</option>
+          <option value="male">Laki - laki</option>
+          <option value="female">Perempuan</option>
         </select>
+        {{> "forms/field_error" field_name="gender"}}
       </fieldset>
+      {{> "commons/alert"}}
       <div class="text-right">
         <button class="btn btn-primary w-xs">Simpan</button>
       </div>

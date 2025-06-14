@@ -7,6 +7,46 @@
 {{#*inline "content"}}
 <section class="w-full">
   <h1 class="text-3xl font-bold">Akun</h1>
+  <div class="mt-10 bg-base-200 p-10 rounded-xl">
+    <h2 class="text-xl font-bold">Informasi Akun</h2>
+    <div class="divider"></div>
+    <form action="/dashboard/account/update-info" method="POST" class="space-y-3">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Username</legend>
+        <input type="text" name="username" class="input w-full" placeholder="Masukkan username" />
+        {{> "forms/field_error" field_name="username"}}
+      </fieldset>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Email</legend>
+        <input type="text" name="email" class="input w-full" placeholder="Masukkan email" />
+        {{> "forms/field_error" field_name="email"}}
+      </fieldset>
+      {{> "commons/alert" }}
+      <div class="text-right">
+        <button type="submit" class="btn btn-primary w-xs">Simpan</button>
+      </div>
+    </form>
+  </div>
+  <div class="mt-10 bg-base-200 p-10 rounded-xl">
+    <h2 class="text-xl font-bold">Ubah Password</h2>
+    <div class="divider"></div>
+    <form action="/dashboard/account/update-password" method="POST" class="space-y-3">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Password Lama</legend>
+        <input type="text" name="old_password" class="input w-full" placeholder="Masukkan password lama" />
+        {{> "forms/field_error" field_name="old_password"}}
+      </fieldset>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Password Baru</legend>
+        <input type="text" name="new_password" class="input w-full" placeholder="Masukkan password baru" />
+        {{> "forms/field_error" field_name="new_password"}}
+      </fieldset>
+      {{> "commons/alert" }}
+      <div class="text-right">
+        <button type="submit" class="btn btn-primary w-xs">Ubah</button>
+      </div>
+    </form>
+  </div>
 </section>
 {{/inline}}
 

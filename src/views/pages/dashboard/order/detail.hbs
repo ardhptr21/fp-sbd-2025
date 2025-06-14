@@ -1,0 +1,141 @@
+{{#> "layouts/dashboard"}}
+
+{{#*inline "meta"}}
+<title>ECommerce</title>
+{{/inline}}
+
+{{#*inline "content"}}
+<section class="w-full">
+  <div class="flex justify-between">
+    <h1 class="text-3xl font-bold">Detail Pesanan</h1>
+    <a href="/dashboard/order" class="btn btn-primary btn-outline">Kembali</a>
+  </div>
+  <div class="divider"></div>
+  <div class="mt-5 space-y-3">
+    <div class="flex justify-between">
+      <p class="text-base-content/50">ID Transaksi</p>
+      <p class="text-primary font-bold">6adf6aababfa639101a</p>
+    </div>
+    <div class="flex justify-between">
+      <p class="text-base-content/50">Tanggal Transaksi</p>
+      <p>14 Juni 2025, 18:00</p>
+    </div>
+    <div class="flex justify-between">
+      <p class="text-base-content/50">Status Transaksi</p>
+      <div class="badge badge-warning">Pending</div>
+    </div>
+  </div>
+
+  <div class="mt-10 p-5 bg-base-200 rounded-xl">
+    <h3 class="font-bold text-lg">Info Pembeli</h3>
+    <div class="space-y-5 mt-5">
+      <div class="flex justify-between gap-5">
+        <div class="space-y-2">
+          <p class="text-base-content/50">Nama</p>
+          <p class="">Ardhi Putra</p>
+        </div>
+        <div class="space-y-2">
+          <p class="text-base-content/50">Email</p>
+          <p class="">Ardhi Putra</p>
+        </div>
+        <div class="space-y-2">
+          <p class="text-base-content/50">No. Telepon</p>
+          <p class="">Ardhi Putra</p>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <p class="text-base-content/50">Alamat</p>
+        <p class="">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perferendis quasi, voluptate quae
+          reprehenderit iste officia itaque recusandae aspernatur quo dolor nulla consectetur sunt tempore debitis.
+          Sequi, unde veniam. Quidem, corporis?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-10 p-5 bg-base-200 rounded-xl">
+    <h3 class="font-bold text-lg">Pembayaran</h3>
+    <div class="mt-5 flex gap-5">
+      <div class="flex flex-col justify-between w-2/5">
+        <div class="space-y-3">
+          <div class="space-y-2">
+            <p class="text-base-content/50">Total Pembayaran</p>
+            <p class="font-bold">Rp. 300000</p>
+          </div>
+          <div class="space-y-2">
+            <p class="text-base-content/50">Tanggal Pembayaran</p>
+            <p>14 Juni 2025, 18:00</p>
+          </div>
+          <div class="space-y-2">
+            <p class="text-base-content/50">Status Transaksi</p>
+            <div class="badge badge-warning">Pending</div>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <p class="text-xs italic text-base-content/50">
+            *Jika pembayaran tidak sesuai, klik tombol di bawah ini untuk menandai pembayaran sebagai invalid. Setelah
+            itu, pembeli akan diberitahu untuk melakukan pembayaran ulang.
+          </p>
+          <form action="">
+            <button class="btn btn-error w-full justify-self-end">Pembayaran Invalid</button>
+          </form>
+        </div>
+      </div>
+      <div class="w-3/5">
+        <p class="text-base-content/50">Bukti Pembayaran</p>
+        <img src="https://imgv2-2-f.scribdassets.com/img/document/427715057/original/1f79e86c14/1?v=1"
+          class="w-full rounded-xl mt-3" alt="payment proof">
+      </div>
+    </div>
+  </div>
+  <div class="mt-10 p-5 bg-base-200 rounded-xl">
+    <h3 class="font-bold text-lg">Produk</h3>
+    <div class="mt-5 space-y-3">
+      <div class="flex items-start gap-3">
+        <img src="https://toko.rumahdropship.com/cdn/uploads//IMG2/novelty-sendok-centong-sayur-bahan-kayu-rr-20.jpg"
+          alt="Produk 1" class="w-20 h-20 object-cover rounded">
+        <div>
+          <h4 class="font-semibold text-lg">Produk 1</h4>
+          <p class="text-sm text-base-content/60">10 x Rp 100.000</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3">
+        <img src="https://toko.rumahdropship.com/cdn/uploads//IMG2/novelty-sendok-centong-sayur-bahan-kayu-rr-20.jpg"
+          alt="Produk 1" class="w-20 h-20 object-cover rounded">
+        <div>
+          <h4 class="font-semibold text-lg">Produk 1</h4>
+          <p class="text-sm text-base-content/60">10 x Rp 100.000</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3">
+        <img src="https://toko.rumahdropship.com/cdn/uploads//IMG2/novelty-sendok-centong-sayur-bahan-kayu-rr-20.jpg"
+          alt="Produk 1" class="w-20 h-20 object-cover rounded">
+        <div>
+          <h4 class="font-semibold text-lg">Produk 1</h4>
+          <p class="text-sm text-base-content/60">10 x Rp 100.000</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="text-right">
+    <div class="space-y-2">
+      <h3 class="text-lg text-base-content/60">Total Pembayaran</h3>
+      <h5 class="text-2xl font-bold">Rp. 6000000</h5>
+    </div>
+  </div>
+  <div class="divider">Aksi</div>
+  <div class="flex gap-3 justify-end">
+    <form action="">
+      <button class="btn btn-error">Batalkan Pesanan</button>
+    </form>
+    <form action="">
+      <button class="btn btn-primary">Terima Pesanan</button>
+    </form>
+  </div>
+</section>
+{{/inline}}
+
+{{#*inline "script"}}
+{{/inline}}
+
+{{/"layouts/dashboard"}}

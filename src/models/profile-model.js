@@ -21,6 +21,11 @@ const schema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    gender: {
+      type: String,
+      enum: ["male", "female"],
+      required: false,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

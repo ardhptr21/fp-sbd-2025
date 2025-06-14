@@ -17,7 +17,12 @@ import {
 } from "../repositories/product-repo.js";
 import { categoryCreateValidator } from "../validators/category-validator.js";
 import { productCreateValidator } from "../validators/product-validator.js";
-import { getProfileByUser } from "../repositories/profile-repo.js";
+import {
+  getProfileByUser,
+  checkIfProfileExistsByPhone,
+} from "../repositories/profile-repo.js";
+import { Profile } from "../models/profile-model.js";
+
 
 /**----------------------
  *    PROFILE
@@ -36,18 +41,62 @@ export const dashboardProfile = async (req, res) => {
 /**
  * @type {express.Handler}
  */
-export const dashboardProfileUpdate = (req, res) => {
-  /**
-   * TODO: Implement change profile functionality
-   * Body: (full_name, date_of_birth, address, phone, gender)
-   * Step:
-   * 1. validate if full_name, date_of_birth, address, phone, gender are valid
-   * 2. make sure phone is unique (not duplicate)
-   * 3. if phone same as current then skip validation
-   * 4. update profile in database
-   * 5. redirect to profile page with success message
-   * 6. if error, redirect back with error message
-   */
+export const dashboardProfileUpdate = async (req, res) => {
+  const { user } = req.session;
+  const referer = req.get("referer") || "/dashboard/profile";
+  
+  const { full_name, date_of_birth, address, phone, gender } = req.body;
+
+  if (!full_name || !date_of_birth || !address || !phone || !gender) {
+    req.session.flash = {
+      alert: { type: "error", message: "Semua data wajib diisi." },
+    };
+    return res.redirect(referer);
+  }
+
+  try {
+    const currentProfile = await getProfileByUser(user._id);
+    if (!currentProfile) {
+      req.session.flash = {
+        alert: { type: "error", message: "Profil tidak ditemukan." },
+      };
+      return res.redirect(referer);
+    }
+
+    if (currentProfile.phone !== phone) {
+      const isUsed = await checkIfProfileExistsByPhone(phone);
+      if (isUsed) {
+        req.session.flash = {
+          alert: { type: "error", message: "Nomor telepon sudah digunakan oleh akun lain." },
+        };
+        return res.redirect(referer);
+      }
+    }
+
+    await Profile.updateOne(
+      { user: user._id },
+      {
+        $set: {
+          full_name,
+          date_of_birth,
+          address,
+          phone,
+          gender,
+        },
+      }
+    );
+
+    req.session.flash = {
+      alert: { type: "success", message: "Profile berhasil diperbaruhi." },
+    };
+    return res.redirect(referer);
+  } catch (err) {
+    console.error("Gagal update profile: ", err);
+    req.session.flash = {
+      alert: { type: "error", message: "Terjadi kesalahan saat memperbaruhi profil." },
+    };
+    return res.redirect(referer);
+  }
   return res.render("pages/dashboard/profile");
 };
 

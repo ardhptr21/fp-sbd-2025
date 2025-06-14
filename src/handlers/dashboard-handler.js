@@ -17,12 +17,13 @@ import {
 } from "../repositories/product-repo.js";
 import { categoryCreateValidator } from "../validators/category-validator.js";
 import { productCreateValidator } from "../validators/product-validator.js";
+import { profileUpdateValidator } from "../validators/profile-validator.js";
 import {
   getProfileByUser,
   checkIfProfileExistsByPhone,
+  updateProfileByUser,
 } from "../repositories/profile-repo.js";
 import { Profile } from "../models/profile-model.js";
-
 
 /**----------------------
  *    PROFILE
@@ -44,15 +45,17 @@ export const dashboardProfile = async (req, res) => {
 export const dashboardProfileUpdate = async (req, res) => {
   const { user } = req.session;
   const referer = req.get("referer") || "/dashboard/profile";
-  
-  const { full_name, date_of_birth, address, phone, gender } = req.body;
 
-  if (!full_name || !date_of_birth || !address || !phone || !gender) {
+  const parsed = validateParse(profileUpdateValidator, req.body);
+  if (!parsed.success) {
+    const messages = Object.values(parsed.errors).join(" ");
     req.session.flash = {
-      alert: { type: "error", message: "Semua data wajib diisi." },
+      alert: { type: "error", message: messages },
     };
     return res.redirect(referer);
   }
+
+  const { full_name, date_of_birth, address, phone, gender } = parsed.data;
 
   try {
     const currentProfile = await getProfileByUser(user._id);
@@ -67,24 +70,22 @@ export const dashboardProfileUpdate = async (req, res) => {
       const isUsed = await checkIfProfileExistsByPhone(phone);
       if (isUsed) {
         req.session.flash = {
-          alert: { type: "error", message: "Nomor telepon sudah digunakan oleh akun lain." },
+          alert: {
+            type: "error",
+            message: "Nomor telepon sudah digunakan oleh akun lain.",
+          },
         };
         return res.redirect(referer);
       }
     }
 
-    await Profile.updateOne(
-      { user: user._id },
-      {
-        $set: {
-          full_name,
-          date_of_birth,
-          address,
-          phone,
-          gender,
-        },
-      }
-    );
+    await updateProfileByUser(user._id, {
+      full_name,
+      date_of_birth,
+      address,
+      phone,
+      gender,
+    });
 
     req.session.flash = {
       alert: { type: "success", message: "Profile berhasil diperbaruhi." },
@@ -93,11 +94,13 @@ export const dashboardProfileUpdate = async (req, res) => {
   } catch (err) {
     console.error("Gagal update profile: ", err);
     req.session.flash = {
-      alert: { type: "error", message: "Terjadi kesalahan saat memperbaruhi profil." },
+      alert: {
+        type: "error",
+        message: "Terjadi kesalahan saat memperbaruhi profil.",
+      },
     };
     return res.redirect(referer);
   }
-  return res.render("pages/dashboard/profile");
 };
 
 /**----------------------

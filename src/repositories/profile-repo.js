@@ -12,3 +12,10 @@ export const createProfile = async (data) => {
 export const getProfileByUser = async (userId) => {
   return await Profile.findOne({ user: userId }).lean();
 };
+
+export const updateProfileByUser = async (userId, data) => {
+  return await Profile.updateOne(
+    { user: userId },
+    { $set: data }
+  );
+};

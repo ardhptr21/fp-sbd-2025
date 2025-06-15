@@ -147,37 +147,49 @@ export const dashboardAccountUpdateInfo = async (req, res) => {
     }
 
     if (currentUser.username !== username) {
-      const isUsed = await checkIfUserExistsByCreds(email, username);
-      if (isUsed) {
+      const isUsernameUsed = await checkIfUserExistsByCreds(username);
+      if (isUsernameUsed) {
         req.session.flash = {
           alert: {
             type: "error",
-            message: "Username atau email sudah digunakan oleh akun lain.",
+            message: "Username sudah digunakan oleh akun lain.",
           },
         };
         return res.redirect(referer);
       }
     }
 
-    await updateUser(user._id, {
-      username,
-      email,
-    });
+    if (currentUser.email !== email) {
+      const isEmailUsed = await checkIfUserExistsByCreds(email);
+      if (isEmailUsed) {
+        req.session.flash = {
+          alert: {
+            type: "error",
+            message: "Email sudah digunakan oleh akun lain.",
+          },
+        };
+        return res.redirect(referer);
+      }
+    }
+
+    await updateUser(user._id, { username, email });
 
     req.session.flash = {
       alert: { type: "success", message: "Akun berhasil diperbarui." },
     };
     return res.redirect(referer);
+
   } catch (err) {
     req.session.flash = {
       alert: {
         type: "error",
-        message: "Terjadi kesalahan saat memperbaruhi akun.",
+        message: "Terjadi kesalahan saat memperbarui akun.",
       },
     };
     return res.redirect(referer);
   }
 };
+
 
 /**
  * @type {express.Handler}

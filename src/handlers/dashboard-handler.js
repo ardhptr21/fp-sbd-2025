@@ -1,3 +1,4 @@
+import { compareSync, hashSync } from "bcrypt";
 import express from "express";
 import { validateParse } from "../lib/validator.js";
 import {
@@ -19,6 +20,7 @@ import { categoryCreateValidator } from "../validators/category-validator.js";
 import { productCreateValidator } from "../validators/product-validator.js";
 import { profileUpdateValidator } from "../validators/profile-validator.js";
 import { accountUpdateValidator } from "../validators/account-validator.js";
+import { passwordUpdateValidator } from "../validators/password-validator.js";
 import {
   getProfileByUser,
   checkIfProfileExistsByPhone,
@@ -194,22 +196,74 @@ export const dashboardAccountUpdateInfo = async (req, res) => {
 /**
  * @type {express.Handler}
  */
-export const dashboardAccountUpdatePassword = (req, res) => {
-  /**
-   * TODO: Implement change password functionality
-   * Body: (old_password, new_password)
-   * Step:
-   * 1. validate if old_password is correct, if not redirect back with error
-   * 2. validate new_password (min length, etc)
-   * 3. update password in database
-   * 4. logout user from session (destroy session)
-   * 5. redirect to login page with success message
-   * 6. if error, redirect back with error message
-   */
+export const dashboardAccountUpdatePassword = async (req, res) => {
 
-  return res.redirect("/dashboard/account");
+  const { user } = req.session;
+  const referer = req.get("referer");
+
+  const parsed = validateParse(passwordUpdateValidator, req.body);
+  if (!parsed.success) {
+    const messages = Object.values(parsed.errors).join(" ");
+    req.session.flash = {
+      alert: { type: "error", message: messages },
+    };
+    return res.redirect(referer);
+  }
+
+  const { old_password, new_password } = parsed.data;
+
+  try {
+    const currentUser = await getUserById(user._id);
+    if (!currentUser) {
+      req.session.flash = {
+        alert: { type: "error", message: "Akun tidak ditemukan." },
+      };
+      return res.redirect(referer);
+    }
+
+    const isValidPassword = compareSync(old_password, user.password);
+    if (!isValidPassword) {
+      return res.render("/dasboard/account", {
+        alert: { type: "error", message: "Password lama salah" },
+      });
+    }
+
+    if (new_password.length < 6) {
+      req.session.flash = {
+        alert: {
+          type: "error",
+          message: "Password baru minimal 6 karakter.",
+        },
+      };
+      return res.redirect(referer);
+    }
+
+    const hashedPassword = await hashSync(new_password, 10);
+    await updateUser(user._id, { password: hashedPassword });
+
+    req.session.flash = {
+      alert: { type: "success", message: "Password berhasil diperbarui." },
+    };
+    
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Gagal logout:", err);
+        return res.redirect(referer);
+      }
+      return res.redirect(referer);
+    }); 
+
+  } catch (err) {
+    console.error("Gagal update password:", err);
+    req.session.flash = {
+      alert: {
+        type: "error",
+        message: "Terjadi kesalahan saat memperbarui password.",
+      },
+    };
+    return res.redirect(referer);
+  }
 };
-
 /**----------------------
  *    PRODUCT
  *------------------------**/

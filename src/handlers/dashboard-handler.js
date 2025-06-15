@@ -18,12 +18,14 @@ import {
 import { categoryCreateValidator } from "../validators/category-validator.js";
 import { productCreateValidator } from "../validators/product-validator.js";
 import { profileUpdateValidator } from "../validators/profile-validator.js";
+import { accountUpdateValidator } from "../validators/account-validator.js";
 import {
   getProfileByUser,
   checkIfProfileExistsByPhone,
   updateProfileByUser,
 } from "../repositories/profile-repo.js";
 import { Profile } from "../models/profile-model.js";
+import { checkIfUserExistsByCreds, getUserById, updateUser } from "../repositories/user-repo.js";
 
 /**----------------------
  *    PROFILE
@@ -110,27 +112,71 @@ export const dashboardProfileUpdate = async (req, res) => {
 /**
  * @type {express.Handler}
  */
-export const dashboardAccount = (req, res) => {
-  return res.render("pages/dashboard/account");
+export const dashboardAccount = async (req, res) => {
+  const account = await getUserById(req.session.user._id);
+  return res.render("pages/dashboard/account", {
+    user: account,
+  });
 };
 
 /**
  * @type {express.Handler}
  */
-export const dashboardAccountUpdateInfo = (req, res) => {
-  /**
-   * TODO: Implement change account info functionality
-   * Body: (username, email)
-   * Step:
-   * 1. validate if username, email are valid
-   * 2. make sure username and email are unique (not duplicate)
-   * 3. if username and email same as current then skip validation
-   * 4. update user info in database
-   * 5. redirect to account page with success message
-   * 6. if error, redirect back with error message
-   */
+export const dashboardAccountUpdateInfo = async (req, res) => {
+  const { user } = req.session;
+  const referer = req.get("referer");
 
-  return res.redirect("/dashboard/account");
+  const parsed = validateParse(accountUpdateValidator, req.body);
+  if (!parsed.success) {
+    const messages = Object.values(parsed.errors).join(" ");
+    req.session.flash = {
+      alert: { type: "error", message: messages },
+    };
+    return res.redirect(referer);
+  }
+
+  const { username, email } = parsed.data;
+
+  try {
+    const currentUser = await getUserById(user._id);
+    if (!currentUser) {
+      req.session.flash = {
+        alert: { type: "error", message: "Profil tidak ditemukan." },
+      };
+      return res.redirect(referer);
+    }
+
+    if (currentUser.username !== username) {
+      const isUsed = await checkIfUserExistsByCreds(email, username);
+      if (isUsed) {
+        req.session.flash = {
+          alert: {
+            type: "error",
+            message: "Username atau email sudah digunakan oleh akun lain.",
+          },
+        };
+        return res.redirect(referer);
+      }
+    }
+
+    await updateUser(user._id, {
+      username,
+      email,
+    });
+
+    req.session.flash = {
+      alert: { type: "success", message: "Akun berhasil diperbarui." },
+    };
+    return res.redirect(referer);
+  } catch (err) {
+    req.session.flash = {
+      alert: {
+        type: "error",
+        message: "Terjadi kesalahan saat memperbaruhi akun.",
+      },
+    };
+    return res.redirect(referer);
+  }
 };
 
 /**

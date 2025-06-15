@@ -17,3 +17,14 @@ export const checkIfUserExistsByCreds = async (email, username) => {
 export const createUser = async (data) => {
   return await User.insertOne(data);
 };
+
+export const getUserById = async (userId) => {
+  return await User.findOne({ _id: userId }).lean();
+};
+
+export const updateUser = async (userId, data) => {
+  return await User.updateOne(
+    { _id: userId },
+    { $set: data }
+  );
+};

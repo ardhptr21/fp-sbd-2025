@@ -1,4 +1,5 @@
 {{#if flash.alert}}
+{{#if (or (eq state flash.alert.state) (not state))}}
 {{#if (eq flash.alert.type "error")}}
 <div role="alert" class="alert alert-error">
   <span>{{flash.alert.message}}</span>
@@ -7,5 +8,6 @@
 <div role="alert" class="alert alert-success">
   <span>{{flash.alert.message}}</span>
 </div>
+{{/if}}
 {{/if}}
 {{/if}}

@@ -38,9 +38,7 @@ import { checkIfUserExistsByCreds, getUserById, updateUser } from "../repositori
  */
 export const dashboardProfile = async (req, res) => {
   const profile = await getProfileByUser(req.session.user._id);
-  return res.render("pages/dashboard/profile", {
-    profile,
-  });
+  return res.render("pages/dashboard/profile", { profile });
 };
 
 /**
@@ -52,9 +50,9 @@ export const dashboardProfileUpdate = async (req, res) => {
 
   const parsed = validateParse(profileUpdateValidator, req.body);
   if (!parsed.success) {
-    const messages = Object.values(parsed.errors).join(" ");
+    req.session.form_errors = parsed.errors;
     req.session.flash = {
-      alert: { type: "error", message: messages },
+      alert: { type: "error", message: "Data yang dimasukkan tidak valid" },
     };
     return res.redirect(referer);
   }
@@ -74,10 +72,7 @@ export const dashboardProfileUpdate = async (req, res) => {
       const isUsed = await checkIfProfileExistsByPhone(phone);
       if (isUsed) {
         req.session.flash = {
-          alert: {
-            type: "error",
-            message: "Nomor telepon sudah digunakan oleh akun lain.",
-          },
+          alert: { type: "error", message: "Nomor telepon sudah digunakan oleh akun lain." },
         };
         return res.redirect(referer);
       }
@@ -96,12 +91,8 @@ export const dashboardProfileUpdate = async (req, res) => {
     };
     return res.redirect(referer);
   } catch (err) {
-    console.error("Gagal update profile: ", err);
     req.session.flash = {
-      alert: {
-        type: "error",
-        message: "Terjadi kesalahan saat memperbaruhi profil.",
-      },
+      alert: { type: "error", message: "Terjadi kesalahan saat memperbaruhi profil." },
     };
     return res.redirect(referer);
   }
@@ -116,9 +107,7 @@ export const dashboardProfileUpdate = async (req, res) => {
  */
 export const dashboardAccount = async (req, res) => {
   const account = await getUserById(req.session.user._id);
-  return res.render("pages/dashboard/account", {
-    user: account,
-  });
+  return res.render("pages/dashboard/account", { user: account });
 };
 
 /**
@@ -130,9 +119,9 @@ export const dashboardAccountUpdateInfo = async (req, res) => {
 
   const parsed = validateParse(accountUpdateValidator, req.body);
   if (!parsed.success) {
-    const messages = Object.values(parsed.errors).join(" ");
+    req.session.form_errors = parsed.errors;
     req.session.flash = {
-      alert: { type: "error", message: messages },
+      alert: { type: "error", message: "Data yang dimasukkan tidak valid", state: "update-info" },
     };
     return res.redirect(referer);
   }
@@ -143,7 +132,7 @@ export const dashboardAccountUpdateInfo = async (req, res) => {
     const currentUser = await getUserById(user._id);
     if (!currentUser) {
       req.session.flash = {
-        alert: { type: "error", message: "Profil tidak ditemukan." },
+        alert: { type: "error", message: "Profil tidak ditemukan.", state: "update-info" },
       };
       return res.redirect(referer);
     }
@@ -155,6 +144,7 @@ export const dashboardAccountUpdateInfo = async (req, res) => {
           alert: {
             type: "error",
             message: "Username sudah digunakan oleh akun lain.",
+            state: "update-info",
           },
         };
         return res.redirect(referer);
@@ -168,6 +158,7 @@ export const dashboardAccountUpdateInfo = async (req, res) => {
           alert: {
             type: "error",
             message: "Email sudah digunakan oleh akun lain.",
+            state: "update-info",
           },
         };
         return res.redirect(referer);
@@ -177,35 +168,37 @@ export const dashboardAccountUpdateInfo = async (req, res) => {
     await updateUser(user._id, { username, email });
 
     req.session.flash = {
-      alert: { type: "success", message: "Akun berhasil diperbarui." },
+      alert: { type: "success", message: "Akun berhasil diperbarui.", state: "update-info" },
     };
     return res.redirect(referer);
-
   } catch (err) {
     req.session.flash = {
       alert: {
         type: "error",
         message: "Terjadi kesalahan saat memperbarui akun.",
+        state: "update-info",
       },
     };
     return res.redirect(referer);
   }
 };
 
-
 /**
  * @type {express.Handler}
  */
 export const dashboardAccountUpdatePassword = async (req, res) => {
-
   const { user } = req.session;
   const referer = req.get("referer");
 
   const parsed = validateParse(passwordUpdateValidator, req.body);
   if (!parsed.success) {
-    const messages = Object.values(parsed.errors).join(" ");
+    req.session.form_errors = parsed.errors;
     req.session.flash = {
-      alert: { type: "error", message: messages },
+      alert: {
+        type: "error",
+        message: "Data yang dimasukkan tidak valid",
+        state: "update-password",
+      },
     };
     return res.redirect(referer);
   }
@@ -216,7 +209,7 @@ export const dashboardAccountUpdatePassword = async (req, res) => {
     const currentUser = await getUserById(user._id);
     if (!currentUser) {
       req.session.flash = {
-        alert: { type: "error", message: "Akun tidak ditemukan." },
+        alert: { type: "error", message: "Akun tidak ditemukan.", state: "update-password" },
       };
       return res.redirect(referer);
     }
@@ -224,41 +217,29 @@ export const dashboardAccountUpdatePassword = async (req, res) => {
     const isValidPassword = compareSync(old_password, user.password);
     if (!isValidPassword) {
       return res.render("/dasboard/account", {
-        alert: { type: "error", message: "Password lama salah" },
+        alert: { type: "error", message: "Password lama salah", state: "update-password" },
       });
     }
 
-    if (new_password.length < 6) {
-      req.session.flash = {
-        alert: {
-          type: "error",
-          message: "Password baru minimal 6 karakter.",
-        },
-      };
-      return res.redirect(referer);
-    }
-
-    const hashedPassword = await hashSync(new_password, 10);
+    const hashedPassword = hashSync(new_password, 10);
     await updateUser(user._id, { password: hashedPassword });
 
     req.session.flash = {
-      alert: { type: "success", message: "Password berhasil diperbarui." },
+      alert: {
+        type: "success",
+        message: "Password berhasil diperbarui.",
+        state: "update-password",
+      },
     };
-    
-    req.session.destroy((err) => {
-      if (err) {
-        console.error("Gagal logout:", err);
-        return res.redirect(referer);
-      }
-      return res.redirect(referer);
-    }); 
 
+    req.session.destroy();
+    return res.redirect(referer);
   } catch (err) {
-    console.error("Gagal update password:", err);
     req.session.flash = {
       alert: {
         type: "error",
         message: "Terjadi kesalahan saat memperbarui password.",
+        state: "update-password",
       },
     };
     return res.redirect(referer);

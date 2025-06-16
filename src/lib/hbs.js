@@ -11,6 +11,8 @@ const hbs = create({
     mul: (a, b) => a * b,
 
     or: (a, b) => a || b,
+    and: (a, b) => a && b,
+    not: (value) => !value,
 
     ternary: (condition, trueValue, falseValue) => (condition ? trueValue : falseValue),
     eq: (a, b) => {

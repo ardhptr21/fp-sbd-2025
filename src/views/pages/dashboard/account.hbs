@@ -22,7 +22,7 @@
         <input type="text" name="email" value="{{user.email}}" class="input w-full" placeholder="Masukkan email" />
         {{> "forms/field_error" field_name="email"}}
       </fieldset>
-      {{> "commons/alert" }}
+      {{> "commons/alert" state="update-info" }}
       <div class="text-right">
         <button type="submit" class="btn btn-primary w-xs">Simpan</button>
       </div>
@@ -42,7 +42,7 @@
         <input type="text" name="new_password" class="input w-full" placeholder="Masukkan password baru" />
         {{> "forms/field_error" field_name="new_password"}}
       </fieldset>
-      {{> "commons/alert" }}
+      {{> "commons/alert" state="update-password" }}
       <div class="text-right">
         <button type="submit" class="btn btn-primary w-xs">Ubah</button>
       </div>

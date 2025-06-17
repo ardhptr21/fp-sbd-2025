@@ -1,0 +1,111 @@
+<div class="w-1/3 p-5 bg-base-300 rounded-xl sticky top-28 space-y-5">
+  <h3 class="text-xl font-bold">Filter</h3>
+  <div class="divider"></div>
+
+  <div class="space-y-3">
+    <h4 class="text-lg font-bold">Harga</h4>
+    <form id="price-form" class="space-y-2">
+      <label class="input w-full">
+        <span>Rp</span>
+        <input type="number" name="minPrice" id="minPrice" class="grow" placeholder="Harga minimum" />
+      </label>
+      <label class="input w-full">
+        <span>Rp</span>
+        <input type="number" name="maxPrice" id="maxPrice" class="grow" placeholder="Harga maksimum" />
+      </label>
+    </form>
+  </div>
+
+  <div class="space-y-3">
+    <h4 class="text-lg font-bold">Urut berdasarkan</h4>
+    <div class="space-y-2 flex flex-col gap-3">
+      <label>
+        <input type="radio" name="sortBy" value="2" class="radio" id="sort-low" />
+        <span class="ml-2">Harga Terendah</span>
+      </label>
+      <label>
+        <input type="radio" name="sortBy" value="3" class="radio" />
+        <span class="ml-2">Harga Tertinggi</span>
+      </label>
+      <label>
+        <input type="radio" name="sortBy" value="0" class="radio" />
+        <span class="ml-2">Terbaru</span>
+      </label>
+      <label>
+        <input type="radio" name="sortBy" value="1" class="radio" />
+        <span class="ml-2">Terlama</span>
+      </label>
+    </div>
+  </div>
+
+  <div>
+    <button id="reset-filter" class="btn btn-outline btn-error w-full">
+      Reset Filter
+    </button>
+  </div>
+</div>
+
+<script>
+  function updateQueryParams(params = {}) {
+    const url = new URL(window.location.href);
+
+    for (const [key, value] of Object.entries(params)) {
+      if (value === "" || value == null) {
+        url.searchParams.delete(key);
+      } else {
+        url.searchParams.set(key, value);
+      }
+    }
+
+    window.location.href = url.toString();
+  }
+
+  const priceForm = document.getElementById("price-form");
+  priceForm.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const min = document.getElementById("minPrice").value;
+      const max = document.getElementById("maxPrice").value;
+      updateQueryParams({ minPrice: min, maxPrice: max });
+    }
+  });
+
+  document.querySelectorAll("input[name='sortBy']").forEach((radio) => {
+    radio.addEventListener("change", () => {
+      updateQueryParams({
+        sortBy: radio.value
+      });
+    });
+  });
+
+  document.getElementById("reset-filter").addEventListener("click", () => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete("minPrice");
+    url.searchParams.delete("maxPrice");
+    url.searchParams.delete("sortBy");
+    window.location.href = url.toString();
+  });
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const min = params.get("minPrice");
+    const max = params.get("maxPrice");
+    const sort = params.get("sortBy");
+
+    if (min) document.getElementById("minPrice").value = min;
+    if (max) document.getElementById("maxPrice").value = max;
+
+    let radioChecked = false;
+    if (sort !== null) {
+      const radio = document.querySelector(`input[name='sortBy'][value="${sort}"]`);
+      if (radio) {
+        radio.checked = true;
+        radioChecked = true;
+      }
+    }
+
+    if (!radioChecked) {
+      document.getElementById("sort-low").checked = true;
+    }
+  });
+</script>

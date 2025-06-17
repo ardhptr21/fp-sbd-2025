@@ -1,0 +1,35 @@
+{{#> "layouts/base"}}
+
+{{#*inline "meta"}}
+<title>ECommerce</title>
+{{/inline}}
+
+{{#*inline "content"}}
+<main class="flex flex-col justify-center items-center mt-32">
+  <section class="bg-primary/10 w-full max-w-7xl mx-auto p-10 rounded-xl">
+    <div class="space-y-2 text-center">
+      <h2 class="text-4xl font-bold">Temukan barang yang sesuai!</h2>
+      <p>
+        Temukan berbagai kategori produk yang kami tawarkan. Pilih kategori yang Anda minati untuk melihat lebih banyak
+        pilihan.
+      </p>
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto mt-10 grid grid-cols-2 gap-10 w-full">
+    {{#each categories}}
+    <a href="/product/c/{{this.slug}}"
+      class="card max-w-full w-full bg-base-200 shadow-sm border border-base-300 hover:border-accent cursor-pointer">
+      <div class="card-body text-center">
+        <h3 class="text-2xl">{{this.name}}</h3>
+      </div>
+    </a>
+    {{/each}}
+  </section>
+</main>
+{{/inline}}
+
+{{#*inline "script"}}
+{{/inline}}
+
+{{/"layouts/base"}}

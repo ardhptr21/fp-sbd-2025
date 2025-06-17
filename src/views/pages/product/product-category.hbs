@@ -5,7 +5,7 @@
 {{/inline}}
 
 {{#*inline "content"}}
-<main class="flex flex-col justify-center items-center mt-32">
+<main class="flex flex-col justify-center items-center mt-32 mb-28">
   <section class="bg-primary/10 w-full max-w-7xl mx-auto p-10 rounded-xl">
     <div class="space-y-2 text-center">
       <h2 class="text-4xl font-bold">{{category.name}}</h2>
@@ -13,17 +13,22 @@
     </div>
   </section>
 
-  <section class="mt-10 grid grid-cols-3 gap-10 w-full max-w-7xl mx-auto">
-    {{#each products}}
-    {{> "cards/product-card"
-    img_url=this.image
-    title=this.name
-    price=this.price
-    category=../category.name
-    stock=this.stock
-    slug=this._id
-    }}
-    {{/each}}
+  <section class="mt-10 w-full flex flex-row gap-10 items-start justify-between max-w-7xl mx-auto">
+    {{> "sidebar-filter"}}
+    </div>
+
+    <div class="w-2/3 grid grid-cols-2 gap-10">
+      {{#each products}}
+      {{> "cards/product-card"
+      img_url=this.image
+      title=this.name
+      price=this.price
+      category=../category
+      stock=this.stock
+      slug=this._id
+      }}
+      {{/each}}
+    </div>
   </section>
 </main>
 {{/inline}}

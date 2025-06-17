@@ -43,4 +43,11 @@ schema.pre("save", function (next) {
   return next();
 });
 
+schema.virtual("profile", {
+  ref: "Profile",
+  localField: "_id",
+  foreignField: "user",
+  justOne: true,
+});
+
 export const User = mongoose.model("User", schema);

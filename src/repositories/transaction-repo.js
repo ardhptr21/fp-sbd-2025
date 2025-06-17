@@ -15,3 +15,42 @@ export const getTransactionBelongsToUser = async (userId, transactionId) => {
   }).lean();
   return transaction;
 };
+
+export const getTransactionById = async (transactionId) => {
+  return await Transaction.findById(transactionId)
+    .populate("payment")
+    .populate({
+      path: "user",
+      populate: { path: "profile" },
+    })
+    .populate({
+      path: "orders",
+      populate: {
+        path: "product",
+        select: "name price image",
+      },
+    })
+    .lean();
+};
+
+export const getAllTransactions = async () => {
+  const transactions = await Transaction.find({})
+    .sort({ created_at: -1 })
+    .populate({
+      path: "user",
+      populate: {
+        path: "profile",
+        select: "full_name",
+      },
+    })
+    .populate({
+      path: "orders",
+      populate: {
+        path: "product",
+        select: "name price image",
+      },
+    })
+    .lean();
+
+  return transactions;
+};

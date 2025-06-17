@@ -2,61 +2,47 @@
   <div class="card-body">
     <div class="flex items-center justify-between">
       <div class="flex justify-start">
-        <h4 class="text-primary">4156abfa36193719</h4>
+        <h4 class="text-primary">{{transaction._id}}</h4>
         <div class="divider divider-horizontal"></div>
-        <p class="max-w-max">Ardhi Putra</p>
+        <p class="max-w-max">{{transaction.user.profile.full_name}}</p>
         <div class="divider divider-horizontal"></div>
-        <p class="text-base-content/60">21 Juni 2023, 10:00</p>
+        <p class="text-base-content/60">{{formatDate transaction.createdAt}}</p>
       </div>
-      <div>
-        <span class="badge badge-success">Selesai</span>
-      </div>
+      {{#if (eq transaction.status "pending")}}
+      <div class="badge badge-warning">Pending</div>
+      {{else if (eq transaction.status "completed")}}
+      <div class="badge badge-success">Sukses</div>
+      {{else if (eq transaction.status "cancelled")}}
+      <div class="badge badge-error">Dibatalkan</div>
+      {{/if}}
     </div>
     <div class="divider"></div>
     <div class="flex items-end">
       <div class="space-y-3 w-3/4">
         <h3 class="font-bold">Order Produk</h3>
         <div class="space-y-3">
+          {{#each transaction.orders}}
           <div class="flex items-start gap-3">
-            <img
-              src="https://toko.rumahdropship.com/cdn/uploads//IMG2/novelty-sendok-centong-sayur-bahan-kayu-rr-20.jpg"
-              alt="Produk 1" class="w-10 h-10 object-cover rounded">
+            <img src="{{this.product.image}}" alt="{{this.product.name}}" class="w-10 h-10 object-cover rounded">
             <div>
-              <h4 class="font-semibold">Produk 1</h4>
-              <p class="text-sm text-base-content/60">Rp 100.000</p>
+              <h4 class="font-semibold">{{this.product.name}}</h4>
+              <p class="text-sm text-base-content/60">{{this.quantity}} x Rp {{this.product.price}}</p>
             </div>
           </div>
-          <div class="flex items-start gap-3">
-            <img
-              src="https://toko.rumahdropship.com/cdn/uploads//IMG2/novelty-sendok-centong-sayur-bahan-kayu-rr-20.jpg"
-              alt="Produk 1" class="w-10 h-10 object-cover rounded">
-            <div>
-              <h4 class="font-semibold">Produk 1</h4>
-              <p class="text-sm text-base-content/60">Rp 100.000</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <img
-              src="https://toko.rumahdropship.com/cdn/uploads//IMG2/novelty-sendok-centong-sayur-bahan-kayu-rr-20.jpg"
-              alt="Produk 1" class="w-10 h-10 object-cover rounded">
-            <div>
-              <h4 class="font-semibold">Produk 1</h4>
-              <p class="text-sm text-base-content/60">10 x Rp 100.000</p>
-            </div>
-          </div>
+          {{/each}}
         </div>
       </div>
       <div class="divider divider-horizontal"></div>
       <div class="max-w-max w-1/4">
         <p class="font-semibold text-base-content/80">Total</p>
         <h3 class="text-xl font-bold">
-          Rp. 100000000
+          Rp. {{transaction.total_price}}
         </h3>
       </div>
     </div>
     <div class="divider"></div>
     <div class="text-right">
-      <a href="/dashboard/order/test" class="btn btn-primary">Detail Pesanan</a>
+      <a href="/dashboard/order/{{transaction._id}}" class="btn btn-primary">Detail Pesanan</a>
     </div>
   </div>
 </div>

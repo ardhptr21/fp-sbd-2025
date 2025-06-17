@@ -30,4 +30,17 @@ schema.post("save", async (doc, next) => {
   next();
 });
 
+schema.virtual("orders", {
+  ref: "Order",
+  localField: "_id",
+  foreignField: "transaction",
+});
+
+schema.virtual("payment", {
+  ref: "Payment",
+  localField: "_id",
+  foreignField: "transaction",
+  justOne: true,
+});
+
 export const Transaction = mongoose.model("Transaction", schema);

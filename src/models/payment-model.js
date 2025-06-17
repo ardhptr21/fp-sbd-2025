@@ -10,7 +10,7 @@ const schema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      enum: ["pending", "paid", "failed"],
+      enum: ["pending", "paid", "invalid", "accepted", "returned"],
       default: "pending",
     },
     transaction: {

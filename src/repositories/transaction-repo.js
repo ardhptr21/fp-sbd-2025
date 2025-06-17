@@ -8,11 +8,18 @@ export const createTransaction = async (userId, total) => {
   return transaction;
 };
 
+export const isTransactionExists = async (transactionId) => {
+  const count = await Transaction.countDocuments({ _id: transactionId });
+  return count > 0;
+};
+
 export const getTransactionBelongsToUser = async (userId, transactionId) => {
   const transaction = await Transaction.findOne({
     _id: transactionId,
     user: userId,
-  }).lean();
+  })
+    .populate("payment")
+    .lean();
   return transaction;
 };
 
@@ -53,4 +60,8 @@ export const getAllTransactions = async () => {
     .lean();
 
   return transactions;
+};
+
+export const getTransactionWithPaymentById = async (transactionId) => {
+  return await Transaction.findById(transactionId).populate("payment");
 };

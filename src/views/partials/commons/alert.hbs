@@ -8,6 +8,10 @@
 <div role="alert" class="alert alert-success">
   <span>{{flash.alert.message}}</span>
 </div>
+{{else if (eq flash.alert.type "warning")}}
+<div role="alert" class="alert alert-warning">
+  <span>{{flash.alert.message}}</span>
+</div>
 {{/if}}
 {{/if}}
 {{/if}}

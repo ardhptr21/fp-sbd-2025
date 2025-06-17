@@ -5,16 +5,14 @@ export const getPaymentByTransaction = async (transactionId) => {
   return payment;
 };
 
+export const getPurePaymentByTransaction = async (transactionId) => {
+  return await Payment.findOne({ transaction: transactionId });
+};
+
 export async function updatePaymentProof(paymentId, paymentProof) {
-  return await Payment.updateOne(
-    { _id: paymentId },
-    { $set: { payment_proof: paymentProof } }
-  );
+  return await Payment.updateOne({ _id: paymentId }, { $set: { payment_proof: paymentProof } });
 }
 
 export async function updatePaymentStatus(paymentId, status) {
-  return await Payment.updateOne(
-    { _id: paymentId },
-    { $set: { status: status } }
-  );
+  return await Payment.updateOne({ _id: paymentId }, { $set: { status: status } });
 }

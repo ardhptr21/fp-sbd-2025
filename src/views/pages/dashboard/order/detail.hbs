@@ -12,6 +12,7 @@
   </div>
   <div class="divider"></div>
   <div class="mt-5 space-y-3">
+    {{> "commons/alert"}}
     <div class="flex justify-between">
       <p class="text-base-content/50">ID Transaksi</p>
       <p class="text-primary font-bold">{{transaction._id}}</p>
@@ -23,7 +24,7 @@
     <div class="flex justify-between">
       <p class="text-base-content/50">Status Transaksi</p>
       {{#if (eq transaction.status "pending")}}
-      <div class="badge badge-warning">Pending</div>
+      <div class="badge badge-warning">Menunggu</div>
       {{else if (eq transaction.status "completed")}}
       <div class="badge badge-success">Sukses</div>
       {{else if (eq transaction.status "cancelled")}}
@@ -59,7 +60,7 @@
   <div class="mt-10 p-5 bg-base-200 rounded-xl">
     <h3 class="font-bold text-lg">Pembayaran</h3>
     <div class="mt-5 flex gap-5">
-      <div class="flex flex-col justify-between w-2/5">
+      <div class="flex flex-col gap-5 justify-between w-2/5">
         <div class="space-y-3">
           <div class="space-y-2">
             <p class="text-base-content/50">Total Pembayaran</p>
@@ -76,27 +77,52 @@
           <div class="space-y-2">
             <p class="text-base-content/50">Status Transaksi</p>
             {{#if (eq transaction.payment.status "pending")}}
-            <div class="badge badge-warning">Pending</div>
+            <div class="badge badge-warning">Menunggu</div>
             {{else if (eq transaction.payment.status "paid")}}
-            <div class="badge badge-success">Paid</div>
-            {{else if (eq transaction.payment.status "failed")}}
-            <div class="badge badge-error">Gagal</div>
+            <div class="badge badge-success badge-outline">Dibayar</div>
+            {{else if (eq transaction.payment.status "accepted")}}
+            <div class="badge badge-success">Diterima</div>
+            {{else if (eq transaction.payment.status "invalid")}}
+            <div class="badge badge-error">Tidak Valid</div>
+            {{else if (eq transaction.payment.status "returned")}}
+            <div class="badge badge-info">Dikembalikan</div>
             {{/if}}
           </div>
         </div>
+        {{#unless (or (eq transaction.payment.status "accepted") (eq transaction.payment.status "returned") )}}
         <div class="space-y-2">
+          {{#unless (or (eq transaction.payment.status "invalid") (eq transaction.payment.status "pending"))}}
           <p class="text-xs italic text-base-content/50">
             *Jika pembayaran tidak sesuai, klik tombol di bawah ini untuk menandai pembayaran sebagai invalid. Setelah
             itu, pembeli akan diberitahu untuk melakukan pembayaran ulang.
           </p>
-          <form action="">
-            <button class="btn btn-error w-full justify-self-end">Pembayaran Invalid</button>
+          <form action="/dashboard/payment/{{transaction._id}}/invalid" method="POST">
+            <button type="submit" class="btn btn-error w-full justify-self-end">Pembayaran Invalid</button>
           </form>
+          <form action="/dashboard/payment/{{transaction._id}}/accept" method="POST">
+            <button type="submit" class="btn btn-success w-full justify-self-end">Terima Pembayaran</button>
+          </form>
+          {{/unless}}
         </div>
+        {{/unless}}
       </div>
-      <div class="w-3/5">
+      <div class="w-3/5 space-y-3">
         <p class="text-base-content/50">Bukti Pembayaran</p>
-        <img src="{{transaction.payment.payment_proof}}" class="w-full rounded-xl mt-3" alt="payment proof">
+        {{#if (eq transaction.payment.status "pending")}}
+        <div role="alert" class="alert alert-info alert-dash">
+          <span>Menunggu bukti pembayaran</span>
+        </div>
+        {{else}}
+        {{#if (eq transaction.payment.status "invalid")}}
+        <div role="alert" class="alert alert-warning alert-dash">
+          <span>
+            *Bukti pembayaran berikut adalah bukti pembayaran lama, sedang menunggu pembeli untuk mengunggah bukti
+            kembali
+          </span>
+        </div>
+        {{/if}}
+        <img src="{{transaction.payment.payment_proof}}" class="w-full rounded-xl" alt="payment proof">
+        {{/if}}
       </div>
     </div>
   </div>
@@ -121,15 +147,21 @@
       <h5 class="text-2xl font-bold">Rp. {{transaction.total_price}}</h5>
     </div>
   </div>
+  {{#unless (or (eq transaction.status "completed") (eq transaction.status "cancelled") )}}
   <div class="divider">Aksi</div>
   <div class="flex gap-3 justify-end">
-    <form action="">
+    {{#unless (eq transaction.status "cancelled")}}
+    <form action="/dashboard/order/{{transaction._id}}/cancel" method="POST">
       <button class="btn btn-error">Batalkan Pesanan</button>
     </form>
-    <form action="">
+    {{/unless}}
+    {{#if (eq transaction.payment.status "accepted")}}
+    <form action="/dashboard/order/{{transaction._id}}/complete" method="POST">
       <button class="btn btn-primary">Terima Pesanan</button>
     </form>
+    {{/if}}
   </div>
+  {{/unless}}
 </section>
 {{/inline}}
 

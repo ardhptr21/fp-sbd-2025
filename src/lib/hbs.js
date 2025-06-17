@@ -21,6 +21,12 @@ const hbs = create({
       }
       return a === b;
     },
+    neq: (a, b) => {
+      if (typeof a === "object" && typeof b === "object") {
+        return JSON.stringify(a) !== JSON.stringify(b);
+      }
+      return a !== b;
+    },
 
     get: (obj, key) => {
       if (typeof obj === "object" && obj !== null && key in obj) {

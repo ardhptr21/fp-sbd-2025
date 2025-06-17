@@ -20,7 +20,7 @@
       <div class="flex justify-between">
         <p class="text-base-content/50">Status Transaksi</p>
         {{#if (eq transaction.status "pending")}}
-        <div class="badge badge-warning">Pending</div>
+        <div class="badge badge-warning">Menunggu</div>
         {{else if (eq transaction.status "completed")}}
         <div class="badge badge-success">Sukses</div>
         {{else if (eq transaction.status "cancelled")}}
@@ -48,17 +48,27 @@
       <h2 class="text-xl font-bold">Pembayaran</h2>
       <div class="flex justify-between mt-3">
         <p class="text-base-content/50">Status</p>
-        {{#if (eq payment.status "pending")}}
-        <div class="badge badge-warning">Pending</div>
-        {{else if (eq payment.status "paid")}}
-        <div class="badge badge-success">Paid</div>
-        {{else if (eq payment.status "failed")}}
-        <div class="badge badge-error">Gagal</div>
+        {{#if (eq transaction.payment.status "pending")}}
+        <div class="badge badge-warning">Menunggu</div>
+        {{else if (eq transaction.payment.status "paid")}}
+        <div class="badge badge-success badge-outline">Dibayar</div>
+        {{else if (eq transaction.payment.status "accepted")}}
+        <div class="badge badge-success">Diterima</div>
+        {{else if (eq transaction.payment.status "invalid")}}
+        <div class="badge badge-error">Tidak Valid</div>
+        {{else if (eq transaction.payment.status "returned")}}
+        <div class="badge badge-info">Dikembalikan</div>
         {{/if}}
       </div>
       <div class="divider"></div>
+      {{#if (eq transaction.payment.status "invalid")}}
+      <div role="alert" class="alert alert-warning alert-dash">
+        <span>*Pembayaran ditandai sebagai tidak valid oleh admin, harap unggah ulang bukti pembayaran</span>
+      </div>
+      {{/if}}
       {{> "commons/alert"}}
-      {{#unless (eq payment.status "paid")}}
+      {{#unless (or (eq payment.status "accepted") (eq payment.status "returned") (eq transaction.status "cancelled")
+      )}}
       <form action="/transaction/{{transaction._id}}/confirm-payment" method="POST" class="space-y-3 mt-3">
         <fieldset class="fieldset">
           <legend class="fieldset-legend">Bukti Pembayaran</legend>

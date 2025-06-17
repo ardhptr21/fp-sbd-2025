@@ -9,8 +9,12 @@ import {
   dashboardCategoryNew,
   dashboardCategoryUpdate,
   dashboardOrder,
+  dashboardOrderAccept,
+  dashboardOrderCancel,
   dashboardOrderDetail,
   dashboardPayment,
+  dashboardPaymentMarkAccepted,
+  dashboardPaymentMarkInvalid,
   dashboardProduct,
   dashboardProductCreate,
   dashboardProductDetail,
@@ -47,8 +51,13 @@ router.post("/category/:slug", authenticate(["admin"]), dashboardCategoryUpdate)
 
 router.get("/order", authenticate(["admin"]), dashboardOrder);
 router.get("/order/:id", authenticate(["admin"]), dashboardOrderDetail);
+router.post("/order/:id/complete", authenticate(["admin"]), dashboardOrderAccept);
+router.post("/order/:id/cancel", authenticate(["admin"]), dashboardOrderCancel);
 
 router.get("/transaction", authenticate(["customer"]), dashboardTransaction);
+
 router.get("/payment", authenticate(["customer"]), dashboardPayment);
+router.post("/payment/:id/invalid", authenticate(["admin"]), dashboardPaymentMarkInvalid);
+router.post("/payment/:id/accept", authenticate(["admin"]), dashboardPaymentMarkAccepted);
 
 export default router;

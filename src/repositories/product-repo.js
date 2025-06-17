@@ -4,6 +4,11 @@ export const createProduct = async (data) => {
   return await Product.insertOne(data);
 };
 
+export const isProductExistById = async (id) => {
+  const count = await Product.countDocuments({ _id: id });
+  return count > 0;
+};
+
 export const getProducts = async () => {
   return await Product.find().sort({ createdAt: -1 }).populate("category").lean();
 };
@@ -86,4 +91,8 @@ export const getProductByIdWithCategory = async (id) => {
 
 export const updateProduct = async (id, data) => {
   return await Product.updateOne({ _id: id }, data, { runValidators: true });
+};
+
+export const deleteProduct = async (id) => {
+  return await Product.deleteOne({ _id: id });
 };

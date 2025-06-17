@@ -6,9 +6,12 @@
 
 {{#*inline "content"}}
 <section class="w-full">
-  <div class="flex justify-between">
-    <h1 class="text-3xl font-bold">Barang</h1>
-    <a href="/dashboard/product/new" class="btn btn-primary">+ Tambah Barang</a>
+  <div class="space-y-4">
+    <div class="flex justify-between">
+      <h1 class="text-3xl font-bold">Barang</h1>
+      <a href="/dashboard/product/new" class="btn btn-primary">+ Tambah Barang</a>
+    </div>
+    {{> "commons/alert"}}
   </div>
 
   <div class="mt-10 space-y-4">
@@ -32,6 +35,22 @@
           </div>
         </div>
         <div class="card-actions justify-end">
+          <div>
+            <label for="delete-product-{{this._id}}" class="btn btn-error">Hapus</label>
+            <input type="checkbox" id="delete-product-{{this._id}}" class="modal-toggle" />
+            <div class="modal" role="dialog">
+              <div class="modal-box">
+                <h3 class="text-lg font-bold">Yakin ingin menghapus barang ini?</h3>
+                <p class="py-4">{{this.name}}</p>
+                <div class="modal-action">
+                  <label for="delete-product-{{this._id}}" class="btn">Batal</label>
+                  <form action="/dashboard/product/{{this._id}}/delete" method="POST">
+                    <button class="btn btn-error">Yakin, Hapus</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
           <a href="/dashboard/product/{{this._id}}/edit" class="btn btn-secondary">Edit</a>
           <a href="/dashboard/product/{{this._id}}" class="btn btn-primary">Detail</a>
         </div>

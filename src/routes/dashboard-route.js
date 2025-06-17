@@ -5,6 +5,7 @@ import {
   dashboardAccountUpdatePassword,
   dashboardCategory,
   dashboardCategoryCreate,
+  dashboardCategoryDelete,
   dashboardCategoryEdit,
   dashboardCategoryNew,
   dashboardCategoryUpdate,
@@ -17,6 +18,7 @@ import {
   dashboardPaymentMarkInvalid,
   dashboardProduct,
   dashboardProductCreate,
+  dashboardProductDelete,
   dashboardProductDetail,
   dashboardProductEdit,
   dashboardProductNew,
@@ -42,12 +44,14 @@ router.get("/product/new", authenticate(["admin"]), dashboardProductNew);
 router.get("/product/:slug", authenticate(["admin"]), dashboardProductDetail);
 router.get("/product/:slug/edit", authenticate(["admin"]), dashboardProductEdit);
 router.post("/product/:slug/edit", authenticate(["admin"]), dashboardProductUpdate);
+router.post("/product/:id/delete", authenticate(["admin"]), dashboardProductDelete);
 
 router.get("/category", authenticate(["admin"]), dashboardCategory);
 router.get("/category/new", authenticate(["admin"]), dashboardCategoryNew);
 router.post("/category/new", authenticate(["admin"]), dashboardCategoryCreate);
 router.get("/category/:slug", authenticate(["admin"]), dashboardCategoryEdit);
-router.post("/category/:slug", authenticate(["admin"]), dashboardCategoryUpdate);
+router.post("/category/:slug/edit", authenticate(["admin"]), dashboardCategoryUpdate);
+router.post("/category/:id/delete", authenticate(["admin"]), dashboardCategoryDelete);
 
 router.get("/order", authenticate(["admin"]), dashboardOrder);
 router.get("/order/:id", authenticate(["admin"]), dashboardOrderDetail);

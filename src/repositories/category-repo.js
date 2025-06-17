@@ -4,6 +4,11 @@ export const createCategory = async (data) => {
   return await Category.insertOne(data);
 };
 
+export const isCategoryExistById = async (id) => {
+  const count = await Category.countDocuments({ _id: id });
+  return count > 0;
+};
+
 export const getCategories = async () => {
   return await Category.find().sort({ createdAt: -1 }).lean();
 };
@@ -23,4 +28,8 @@ export const updateCategory = async (slug, data) => {
 
 export const getCategoriesForSelect = async () => {
   return await Category.find().sort({ name: 1 }).select("name slug").lean();
+};
+
+export const deleteCategory = async (id) => {
+  return await Category.deleteOne({ _id: id });
 };

@@ -1,11 +1,17 @@
 import { getPurePaymentByTransaction } from "../../repositories/payment-repo.js";
-import { isTransactionExists } from "../../repositories/transaction-repo.js";
+import {
+  getAllTransactionsBelongToUser,
+  isTransactionExists,
+} from "../../repositories/transaction-repo.js";
 
 /**
  * @type {import('express').Handler}
  */
-export const dashboardPayment = (req, res) => {
-  return res.render("pages/dashboard/payment");
+export const dashboardPayment = async (req, res) => {
+  const transactions = await getAllTransactionsBelongToUser(req.session.user._id, "pending");
+  return res.render("pages/dashboard/payment", {
+    transactions,
+  });
 };
 
 /**

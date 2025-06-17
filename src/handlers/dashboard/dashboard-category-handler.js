@@ -2,8 +2,10 @@ import { validateParse } from "../../lib/validator.js";
 import {
   checkCategoryExists,
   createCategory,
+  deleteCategory,
   getCategories,
   getCategoryBySlug,
+  isCategoryExistById,
   updateCategory,
 } from "../../repositories/category-repo.js";
 import { categoryCreateValidator } from "../../validators/category-validator.js";
@@ -102,4 +104,32 @@ export const dashboardCategoryUpdate = async (req, res) => {
     alert: { type: "success", message: "Kategori berhasil diperbarui" },
   };
   return res.redirect(`/dashboard/category/${slug}`);
+};
+
+/**
+ * @type {import('express').Handler}
+ */
+export const dashboardCategoryDelete = async (req, res) => {
+  const { id } = req.params;
+
+  const exist = await isCategoryExistById(id);
+  if (!exist) {
+    req.session.flash = {
+      alert: { type: "error", message: "Kategori tidak ditemukan" },
+    };
+    return res.redirect("/dashboard/category");
+  }
+
+  try {
+    await deleteCategory(id);
+    req.session.flash = {
+      alert: { type: "success", message: "Kategori berhasil dihapus" },
+    };
+  } catch (error) {
+    req.session.flash = {
+      alert: { type: "error", message: error.message || "Gagal menghapus kategori, coba lagi" },
+    };
+  }
+
+  return res.redirect("/dashboard/category");
 };

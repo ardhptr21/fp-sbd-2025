@@ -65,3 +65,25 @@ export const getAllTransactions = async () => {
 export const getTransactionWithPaymentById = async (transactionId) => {
   return await Transaction.findById(transactionId).populate("payment");
 };
+
+export const getAllTransactionsBelongToUser = async (userId, paymentStatus) => {
+  let transactions = await Transaction.find({ user: userId })
+    .sort({ createdAt: -1 })
+    .populate({
+      path: "orders",
+      populate: {
+        path: "product",
+        select: "name price image",
+      },
+    })
+    .populate("payment", "status")
+    .lean();
+
+  if (paymentStatus) {
+    transactions = transactions.filter(
+      (transaction) => transaction.payment && transaction.payment.status === paymentStatus
+    );
+  }
+
+  return transactions;
+};

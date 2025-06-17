@@ -8,7 +8,8 @@
 <section class="w-full">
   <h1 class="text-3xl font-bold">Edit Kategori</h1>
 
-  <form action="" method="POST" class="mt-10 space-y-3 p-10 bg-base-200 rounded-xl">
+  <form action="/dashboard/category/{{category.slug}}/edit" method="POST"
+    class="mt-10 space-y-3 p-10 bg-base-200 rounded-xl">
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Nama</legend>
       <input type="text" name="name" value="{{or form.name category.name}}" class="input w-full"
@@ -22,7 +23,7 @@
       {{> "forms/field_error" field_name="description"}}
     </fieldset>
     {{> "commons/alert"}}
-    <button class="btn btn-primary w-full">Simpan</button>
+    <button type="submit" class="btn btn-primary w-full">Simpan</button>
     <a class="btn w-full" href="/dashboard/category">Kembali</a>
   </form>
 </section>

@@ -7,7 +7,6 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --color-red-500: oklch(63.7% 0.237 25.331);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
@@ -188,6 +187,48 @@
   }
 }
 @layer utilities {
+  .modal {
+    pointer-events: none;
+    visibility: hidden;
+    position: fixed;
+    inset: calc(0.25rem * 0);
+    margin: calc(0.25rem * 0);
+    display: grid;
+    height: 100%;
+    max-height: none;
+    width: 100%;
+    max-width: none;
+    align-items: center;
+    justify-items: center;
+    background-color: transparent;
+    padding: calc(0.25rem * 0);
+    color: inherit;
+    overflow-x: hidden;
+    transition: translate 0.3s ease-out, visibility 0.3s allow-discrete, background-color 0.3s ease-out, opacity 0.1s ease-out;
+    overflow-y: hidden;
+    overscroll-behavior: contain;
+    z-index: 999;
+    &::backdrop {
+      display: none;
+    }
+    &.modal-open, &[open], &:target {
+      pointer-events: auto;
+      visibility: visible;
+      opacity: 100%;
+      background-color: oklch(0% 0 0/ 0.4);
+      .modal-box {
+        translate: 0 0;
+        scale: 1;
+        opacity: 1;
+      }
+    }
+    @starting-style {
+      &.modal-open, &[open], &:target {
+        visibility: hidden;
+        opacity: 0%;
+      }
+    }
+  }
   .drawer-side {
     pointer-events: none;
     visibility: hidden;
@@ -258,6 +299,30 @@
       &:checked ~ .drawer-side {
         pointer-events: auto;
         visibility: visible;
+      }
+    }
+  }
+  .modal-toggle {
+    position: fixed;
+    height: calc(0.25rem * 0);
+    width: calc(0.25rem * 0);
+    appearance: none;
+    opacity: 0%;
+    &:checked + .modal {
+      pointer-events: auto;
+      visibility: visible;
+      opacity: 100%;
+      background-color: oklch(0% 0 0/ 0.4);
+      .modal-box {
+        translate: 0 0;
+        scale: 1;
+        opacity: 1;
+      }
+    }
+    @starting-style {
+      &:checked + .modal {
+        visibility: hidden;
+        opacity: 0%;
       }
     }
   }
@@ -1361,9 +1426,6 @@
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
-  .top-20 {
-    top: calc(var(--spacing) * 20);
-  }
   .top-28 {
     top: calc(var(--spacing) * 28);
   }
@@ -1448,10 +1510,24 @@
   .z-10 {
     z-index: 10;
   }
-  .drawer-content {
-    grid-column-start: 2;
+  .modal-box {
+    grid-column-start: 1;
     grid-row-start: 1;
-    min-width: calc(0.25rem * 0);
+    max-height: 100vh;
+    width: calc(11/12 * 100%);
+    max-width: 32rem;
+    background-color: var(--color-base-100);
+    padding: calc(0.25rem * 6);
+    transition: translate 0.3s ease-out, scale 0.3s ease-out, opacity 0.2s ease-out 0.05s, box-shadow 0.3s ease-out;
+    border-top-left-radius: var(--modal-tl, var(--radius-box));
+    border-top-right-radius: var(--modal-tr, var(--radius-box));
+    border-bottom-left-radius: var(--modal-bl, var(--radius-box));
+    border-bottom-right-radius: var(--modal-br, var(--radius-box));
+    scale: 95%;
+    opacity: 0;
+    box-shadow: oklch(0% 0 0/ 0.25) 0px 25px 50px -12px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
   .container {
     width: 100%;
@@ -1593,6 +1669,12 @@
         }
       }
     }
+  }
+  .modal-action {
+    margin-top: calc(0.25rem * 6);
+    display: flex;
+    justify-content: flex-end;
+    gap: calc(0.25rem * 2);
   }
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
@@ -1921,6 +2003,9 @@
   .hidden {
     display: none;
   }
+  .inline-block {
+    display: inline-block;
+  }
   .table {
     display: table;
   }
@@ -1994,9 +2079,6 @@
   }
   .h-screen {
     height: 100vh;
-  }
-  .btn-block {
-    width: 100%;
   }
   .w-1 {
     width: calc(var(--spacing) * 1);
@@ -2078,6 +2160,9 @@
   }
   .max-w-xs {
     max-width: var(--container-xs);
+  }
+  .flex-1 {
+    flex: 1;
   }
   .flex-none {
     flex: none;
@@ -2311,9 +2396,6 @@
       background-color: color-mix(in oklab, var(--color-primary) 10%, transparent);
     }
   }
-  .bg-red-500 {
-    background-color: var(--color-red-500);
-  }
   .bg-cover {
     background-size: cover;
   }
@@ -2339,16 +2421,17 @@
     font-size: 0.875rem;
     font-weight: 600;
   }
-  .badge-xs {
-    --size: calc(var(--size-selector, 0.25rem) * 4);
-    font-size: 0.625rem;
-    padding-inline: calc(0.25rem * 2 - var(--border));
-  }
   .px-1 {
     padding-inline: calc(var(--spacing) * 1);
   }
+  .py-4 {
+    padding-block: calc(var(--spacing) * 4);
+  }
   .text-center {
     text-align: center;
+  }
+  .text-left {
+    text-align: left;
   }
   .text-right {
     text-align: right;
@@ -2438,9 +2521,6 @@
   }
   .text-error {
     color: var(--color-error);
-  }
-  .text-info {
-    color: var(--color-info);
   }
   .text-primary {
     color: var(--color-primary);
@@ -2556,10 +2636,6 @@
   .badge-info {
     --badge-color: var(--color-info);
     --badge-fg: var(--color-info-content);
-  }
-  .badge-neutral {
-    --badge-color: var(--color-neutral);
-    --badge-fg: var(--color-neutral-content);
   }
   .badge-success {
     --badge-color: var(--color-success);

@@ -1,0 +1,46 @@
+<div class="card bg-base-200">
+  <div class="card-body">
+    <div class="flex items-center justify-between">
+      <div class="flex justify-start">
+        <h4 class="text-primary">{{transaction._id}}</h4>
+        <div class="divider divider-horizontal"></div>
+        <p class="text-base-content/60">{{formatDate transaction.createdAt}}</p>
+      </div>
+      {{#if (eq transaction.status "pending")}}
+      <div class="badge badge-warning">Pending</div>
+      {{else if (eq transaction.status "completed")}}
+      <div class="badge badge-success">Sukses</div>
+      {{else if (eq transaction.status "cancelled")}}
+      <div class="badge badge-error">Dibatalkan</div>
+      {{/if}}
+    </div>
+    <div class="divider"></div>
+    <div class="flex items-end">
+      <div class="space-y-3 w-3/4">
+        <h3 class="font-bold">Order Produk</h3>
+        <div class="space-y-3">
+          {{#each transaction.orders}}
+          <div class="flex items-start gap-3">
+            <img src="{{this.product.image}}" alt="{{this.product.name}}" class="w-10 h-10 object-cover rounded">
+            <div>
+              <h4 class="font-semibold">{{this.product.name}}</h4>
+              <p class="text-sm text-base-content/60">{{this.quantity}} x Rp {{this.product.price}}</p>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+      <div class="divider divider-horizontal"></div>
+      <div class="max-w-max w-1/4">
+        <p class="font-semibold text-base-content/80">Total</p>
+        <h3 class="text-xl font-bold">
+          Rp. {{transaction.total_price}}
+        </h3>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="text-right">
+      <a href="/transaction/{{transaction._id}}" class="btn btn-primary">Detail Transaksi</a>
+    </div>
+  </div>
+</div>

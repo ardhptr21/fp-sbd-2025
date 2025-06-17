@@ -6,18 +6,39 @@
 
 {{#*inline "content"}}
 <section class="w-full">
-  <div class="flex justify-between">
-    <h1 class="text-3xl font-bold">Kategori Barang</h1>
-    <a href="/dashboard/category/new" class="btn btn-primary">+ Tambah Kategori</a>
+  <div class="space-y-4">
+    <div class="flex justify-between">
+      <h1 class="text-3xl font-bold">Kategori Barang</h1>
+      <a href="/dashboard/category/new" class="btn btn-primary">+ Tambah Kategori</a>
+    </div>
+    {{> "commons/alert"}}
   </div>
   <div class="mt-10 grid grid-cols-2 gap-10">
     {{#each categories}}
-    <a href="/dashboard/category/{{this.slug}}"
-      class="card bg-base-200 shadow-sm border border-base-300 hover:border-accent cursor-pointer">
+    <div class="card bg-base-200 shadow-sm border border-base-300 hover:border-accent ">
       <div class="card-body text-center">
         <h3 class="text-2xl">{{this.name}}</h3>
+        <div class="flex justify-between gap-2 mt-3">
+          <div class="w-full flex-1 text-left">
+            <label for="delete-category-{{this._id}}" class="btn btn-error btn-sm w-full">Hapus</label>
+            <input type="checkbox" id="delete-category-{{this._id}}" class="modal-toggle" />
+            <div class="modal" role="dialog">
+              <div class="modal-box">
+                <h3 class="text-lg font-bold">Yakin ingin menghapus kategori ini?</h3>
+                <p class="py-4">{{this.name}}</p>
+                <div class="modal-action">
+                  <label for="delete-category-{{this._id}}" class="btn">Batal</label>
+                  <form action="/dashboard/category/{{this._id}}/delete" method="POST">
+                    <button class="btn btn-error">Yakin, Hapus</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a href="/dashboard/category/{{this.slug}}" class="btn btn-primary btn-sm w-full flex-1">Edit</a>
+        </div>
       </div>
-    </a>
+    </div>
     {{/each}}
   </div>
 </section>

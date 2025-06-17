@@ -25,11 +25,6 @@ const schema = new mongoose.Schema(
   }
 );
 
-schema.post("save", async (doc, next) => {
-  await Payment.create({ transaction: doc._id });
-  next();
-});
-
 schema.virtual("orders", {
   ref: "Order",
   localField: "_id",

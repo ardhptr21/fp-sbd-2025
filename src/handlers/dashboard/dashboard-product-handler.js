@@ -2,9 +2,11 @@ import { validateParse } from "../../lib/validator.js";
 import { getCategoriesForSelect } from "../../repositories/category-repo.js";
 import {
   createProduct,
+  deleteProduct,
   getProductById,
   getProductByIdWithCategory,
   getProducts,
+  isProductExistById,
   updateProduct,
 } from "../../repositories/product-repo.js";
 import { productCreateValidator } from "../../validators/product-validator.js";
@@ -59,6 +61,9 @@ export const dashboardProductCreate = async (req, res) => {
   return res.redirect("/dashboard/product/new");
 };
 
+/**
+ * @type {import('express').Handler}
+ */
 export const dashboardProductDetail = async (req, res) => {
   const slug = req.params.slug;
   const product = await getProductByIdWithCategory(slug);
@@ -69,6 +74,9 @@ export const dashboardProductDetail = async (req, res) => {
   });
 };
 
+/**
+ * @type {import('express').Handler}
+ */
 export const dashboardProductEdit = async (req, res) => {
   const slug = req.params.slug;
   const categories = await getCategoriesForSelect();
@@ -84,6 +92,9 @@ export const dashboardProductEdit = async (req, res) => {
   });
 };
 
+/**
+ * @type {import('express').Handler}
+ */
 export const dashboardProductUpdate = async (req, res) => {
   const slug = req.params.slug;
   const categories = await getCategoriesForSelect();
@@ -115,4 +126,32 @@ export const dashboardProductUpdate = async (req, res) => {
   };
 
   return res.redirect(`/dashboard/product/${slug}/edit`);
+};
+
+/**
+ * @type {import('express').Handler}
+ */
+export const dashboardProductDelete = async (req, res) => {
+  const { id } = req.params;
+
+  const exist = await isProductExistById(id);
+  if (!exist) {
+    req.session.flash = {
+      alert: { type: "error", message: "Produk tidak ditemukan" },
+    };
+    return res.redirect("/dashboard/product");
+  }
+
+  try {
+    await deleteProduct(id);
+    req.session.flash = {
+      alert: { type: "success", message: "Produk berhasil dihapus" },
+    };
+  } catch (error) {
+    req.session.flash = {
+      alert: { type: "error", message: error.message || "Gagal menghapus produk, coba lagi" },
+    };
+  }
+
+  return res.redirect("/dashboard/product");
 };

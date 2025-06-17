@@ -13,5 +13,14 @@ export const accountUpdateValidator = v.object({
     v.nonEmpty("Email wajib diisi"),
     v.email("Email tidak valid"),
     v.trim()
-  )
+  ),
+});
+
+export const passwordUpdateValidator = v.object({
+  password: v.pipe(
+    v.string(),
+    v.nonEmpty("Password wajib diisi"),
+    v.minLength(6, "Password minimal 6 karakter"),
+    v.trim()
+  ),
 });

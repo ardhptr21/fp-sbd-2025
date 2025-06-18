@@ -1,5 +1,7 @@
 import { getAllCarts, makeEmptyCart } from "../repositories/cart-repo.js";
 import { createOrderFromCart } from "../repositories/order-repo.js";
+import { createPayment } from "../repositories/payment-repo.js";
+import { editStockFromCarts } from "../repositories/product-repo.js";
 import { createTransaction } from "../repositories/transaction-repo.js";
 
 /**
@@ -38,6 +40,11 @@ export const checkoutHandler = async (req, res) => {
   }
 
   await makeEmptyCart(user._id);
+  await editStockFromCarts(carts);
+  await createPayment({
+    transaction: transaction._id,
+    status: "pending",
+  });
 
   return res.redirect(`/transaction/${transaction._id}`);
 };

@@ -8,7 +8,6 @@
 <section class="w-full">
   <h1 class="text-3xl font-bold">Daftar Transaksi</h1>
   <div class="mt-10 space-y-3">
-    {{log transactions}}
     {{#each transactions}}
     {{> "cards/transaction-card" transaction=this}}
     {{/each}}

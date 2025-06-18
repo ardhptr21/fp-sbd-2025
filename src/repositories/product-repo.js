@@ -96,3 +96,14 @@ export const updateProduct = async (id, data) => {
 export const deleteProduct = async (id) => {
   return await Product.deleteOne({ _id: id });
 };
+
+export const editStockFromCarts = async (carts) => {
+  const bulkOps = carts.map((cart) => ({
+    updateOne: {
+      filter: { _id: cart.product._id },
+      update: { $inc: { stock: -cart.quantity } },
+    },
+  }));
+
+  return await Product.bulkWrite(bulkOps);
+};

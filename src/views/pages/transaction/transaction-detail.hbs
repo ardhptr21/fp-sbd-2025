@@ -67,8 +67,8 @@
       </div>
       {{/if}}
       {{> "commons/alert"}}
-      {{#unless (or (eq payment.status "accepted") (eq payment.status "returned") (eq transaction.status "cancelled")
-      )}}
+      {{#unless (or (eq transaction.status 'cancelled') (or (or (eq payment.status "accepted") (eq payment.status
+      "returned")) (eq payment.status "paid")))}}
       <form action="/transaction/{{transaction._id}}/confirm-payment" method="POST" class="space-y-3 mt-3">
         <fieldset class="fieldset">
           <legend class="fieldset-legend">Bukti Pembayaran</legend>

@@ -146,6 +146,6 @@ export const dashboardAccountUpdatePassword = async (req, res) => {
         state: "update-password",
       },
     };
-    return res.redirect(referer);
+    return res.redirect("/auth/login");
   }
 };

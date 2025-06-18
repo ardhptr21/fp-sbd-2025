@@ -17,7 +17,13 @@ export const accountUpdateValidator = v.object({
 });
 
 export const passwordUpdateValidator = v.object({
-  password: v.pipe(
+  old_password: v.pipe(
+    v.string(),
+    v.nonEmpty("Password wajib diisi"),
+    v.minLength(6, "Password minimal 6 karakter"),
+    v.trim()
+  ),
+  new_password: v.pipe(
     v.string(),
     v.nonEmpty("Password wajib diisi"),
     v.minLength(6, "Password minimal 6 karakter"),

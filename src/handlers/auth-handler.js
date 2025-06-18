@@ -43,25 +43,28 @@ export const registeringHandler = async (req, res) => {
   const body = req.body;
   const result = validateParse(registerValidator, body);
   if (!result.success) {
-    return res.render("pages/auth/register", {
+    req.session.form_errors = result.errors;
+    req.session.flash = {
       alert: { type: "error", message: "Data yang dimasukkan tidak valid" },
-      form_errors: result.errors,
-    });
+    };
+    return res.redirect("/auth/register");
   }
 
   const username = generateUsernameFromEmail(result.data.email);
   const isExists = await checkIfUserExistsByCreds(result.data.email, username);
   if (isExists) {
-    return res.render("pages/auth/register", {
+    req.session.flash = {
       alert: { type: "error", message: "Email atau username sudah terdaftar" },
-    });
+    };
+    return res.redirect("/auth/register");
   }
 
   const phoneExists = await checkIfProfileExistsByPhone(result.data.phone);
   if (phoneExists) {
-    return res.render("pages/auth/register", {
+    req.session.flash = {
       alert: { type: "error", message: "Nomor telepon sudah terdaftar" },
-    });
+    };
+    return res.redirect("pages/auth/register");
   }
 
   const newUser = {
@@ -71,28 +74,31 @@ export const registeringHandler = async (req, res) => {
   };
 
   const newProfile = {
-    name: result.data.name,
+    full_name: result.data.name,
     phone: result.data.phone,
   };
 
   const user = await createUser(newUser);
   if (!user) {
-    return res.render("pages/auth/register", {
+    req.session.flash = {
       alert: { type: "error", message: "Gagal membuat akun, silakan coba lagi" },
-    });
+    };
+    return res.redirect("/auth/register");
   }
 
   newProfile.user = user._id;
   const profile = await createProfile(newProfile);
   if (!profile) {
-    return res.render("pages/auth/register", {
+    req.session.flash = {
       alert: { type: "error", message: "Gagal membuat profil, silakan coba lagi" },
-    });
+    };
+    return res.redirect("/auth/register");
   }
 
-  return res.render("pages/auth/register", {
-    alert: { type: "success", message: "Pendaftaran berhasil, silakan masuk" },
-  });
+  req.session.flash = {
+    alert: { type: "success", message: "Akun berhasil dibuat, silakan masuk" },
+  };
+  return res.redirect("/auth/register");
 };
 
 /**
@@ -102,24 +108,27 @@ export const loggingInHandler = async (req, res) => {
   const body = req.body;
   const result = validateParse(loginValidator, body);
   if (!result.success) {
-    return res.render("pages/auth/login", {
+    req.session.form_errors = result.errors;
+    req.session.flash = {
       alert: { type: "error", message: "Data yang dimasukkan tidak valid" },
-      form_errors: result.errors,
-    });
+    };
+    return res.redirect("/auth/login");
   }
 
   const user = await getUserByCredential(result.data.credential);
   if (!user) {
-    return res.render("pages/auth/login", {
+    req.session.flash = {
       alert: { type: "error", message: "Akun tidak ditemukan atau kata sandi salah" },
-    });
+    };
+    return res.redirect("/auth/login");
   }
 
   const isValidPassword = compareSync(result.data.password, user.password);
   if (!isValidPassword) {
-    return res.render("pages/auth/login", {
+    req.session.flash = {
       alert: { type: "error", message: "Akun tidak ditemukan atau kata sandi salah" },
-    });
+    };
+    return res.redirect("/auth/login");
   }
 
   req.session.user = user;

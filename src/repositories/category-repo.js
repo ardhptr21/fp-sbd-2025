@@ -14,6 +14,48 @@ export const getCategories = async () => {
   return await Category.find().sort({ createdAt: -1 }).lean();
 };
 
+export const getCategoriesWithTotalSelling = async () => {
+  return await Category.aggregate([
+    {
+      $lookup: {
+        from: "products", // collection name (lowercase + plural)
+        localField: "_id",
+        foreignField: "category",
+        as: "products",
+      },
+    },
+    {
+      $lookup: {
+        from: "orders", // collection name (lowercase + plural)
+        localField: "products._id",
+        foreignField: "product",
+        as: "orders",
+      },
+    },
+    {
+      $addFields: {
+        totalSoldProducts: {
+          $sum: "$orders.quantity",
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        slug: 1,
+        description: 1,
+        totalSoldProducts: 1,
+        createdAt: 1,
+        updatedAt: 1,
+      },
+    },
+    {
+      $sort: { createdAt: -1 },
+    },
+  ]);
+};
+
 export const getCategoryBySlug = async (slug) => {
   return await Category.findOne({ slug }).lean();
 };

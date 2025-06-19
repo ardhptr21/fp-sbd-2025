@@ -4,6 +4,7 @@ import {
   createCategory,
   deleteCategory,
   getCategories,
+  getCategoriesWithTotalSelling,
   getCategoryBySlug,
   isCategoryExistById,
   updateCategory,
@@ -14,7 +15,7 @@ import { categoryCreateValidator } from "../../validators/category-validator.js"
  * @type {import('express').Handler}
  */
 export const dashboardCategory = async (req, res) => {
-  const categories = await getCategories();
+  const categories = await getCategoriesWithTotalSelling();
   return res.render("pages/dashboard/category/index", {
     categories,
   });

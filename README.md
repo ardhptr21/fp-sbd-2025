@@ -75,6 +75,6 @@ pnpm start
 
 ## 📊 ERD
 
-> Coming Soon
+![ERD Database](./assets/erd.jpg)
 
 ## 🤸 Thank You

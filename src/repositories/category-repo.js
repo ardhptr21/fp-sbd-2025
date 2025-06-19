@@ -1,4 +1,5 @@
 import { Category } from "../models/category-model.js";
+import { addToTrash } from "./trash-repo.js";
 
 export const createCategory = async (data) => {
   return await Category.insertOne(data);
@@ -31,5 +32,7 @@ export const getCategoriesForSelect = async () => {
 };
 
 export const deleteCategory = async (id) => {
-  return await Category.deleteOne({ _id: id });
+  const category = await Category.findOneAndDelete({ _id: id });
+  await addToTrash("category", category);
+  return category;
 };

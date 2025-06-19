@@ -1,4 +1,5 @@
 import { Product } from "../models/product-model.js";
+import { addToTrash } from "./trash-repo.js";
 
 export const createProduct = async (data) => {
   return await Product.insertOne(data);
@@ -94,7 +95,9 @@ export const updateProduct = async (id, data) => {
 };
 
 export const deleteProduct = async (id) => {
-  return await Product.deleteOne({ _id: id });
+  const product = await Product.findOneAndDelete({ _id: id });
+  await addToTrash("product", product);
+  return product;
 };
 
 export const editStockFromCarts = async (carts) => {

@@ -26,6 +26,9 @@ import {
   dashboardProfile,
   dashboardProfileUpdate,
   dashboardTransaction,
+  dashboardTrash,
+  dashboardTrashDelete,
+  dashboardTrashRestore,
 } from "../handlers/dashboard-handler.js";
 import { authenticate } from "../middlewares/auth-middleware.js";
 
@@ -63,5 +66,9 @@ router.get("/transaction", authenticate(["customer"]), dashboardTransaction);
 router.get("/payment", authenticate(["customer"]), dashboardPayment);
 router.post("/payment/:id/invalid", authenticate(["admin"]), dashboardPaymentMarkInvalid);
 router.post("/payment/:id/accept", authenticate(["admin"]), dashboardPaymentMarkAccepted);
+
+router.get("/trash", authenticate(["admin"]), dashboardTrash);
+router.post("/trash/:id/delete", authenticate(["admin"]), dashboardTrashDelete);
+router.post("/trash/:id/restore", authenticate(["admin"]), dashboardTrashRestore);
 
 export default router;

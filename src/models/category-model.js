@@ -34,7 +34,7 @@ schema.pre("save", function (next) {
   return next();
 });
 
-schema.pre("deleteOne", async function (next) {
+schema.pre("findOneAndDelete", async function (next) {
   const filter = this.getFilter();
   if (!filter || !filter._id) return next();
   const count = await Product.countDocuments({ category: filter._id });

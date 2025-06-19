@@ -1,0 +1,53 @@
+{{#> "layouts/dashboard"}}
+
+{{#*inline "meta"}}
+<title>Sampah | Dashboard</title>
+{{/inline}}
+
+{{#*inline "content"}}
+<section class="w-full">
+  <div class="space-y-4">
+    <h1 class="text-3xl font-bold">Sampah</h1>
+    {{> "commons/alert"}}
+  </div>
+
+  <div class="mt-10 space-y-4">
+    {{#trashes}}
+    <div class="card card-side bg-base-200 border border-base-300 shadow-sm items-center">
+      <div class="card-body">
+        <div class="mb-5 space-y-2">
+          <h2 class="card-title">{{this.meta.name}}</h2>
+          <div class="badge badge-success badge-sm">{{this.type}}</div>
+        </div>
+        <p class="text-sm text-base-content/60">Dihapus pada {{formatDate this.createdAt}}</p>
+        <div class="flex gap-2 justify-end">
+          <form action="/dashboard/trash/{{this._id}}/restore" method="POST">
+            <button class="btn btn-primary btn-sm">Pulihkan</button>
+          </form>
+          <div>
+            <label for="delete-trash-{{this._id}}" class="btn btn-error btn-sm w-full">Hapus Permanen</label>
+            <input type="checkbox" id="delete-trash-{{this._id}}" class="modal-toggle" />
+            <div class="modal" role="dialog">
+              <div class="modal-box">
+                <h3 class="text-lg font-bold">Yakin ingin menghapus permanen?</h3>
+                <div class="modal-action">
+                  <label for="delete-trash-{{this._id}}" class="btn">Batal</label>
+                  <form action="/dashboard/trash/{{this._id}}/delete" method="POST">
+                    <button class="btn btn-error">Yakin, Hapus</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/trashes}}
+  </div>
+</section>
+{{/inline}}
+
+{{#*inline "script"}}
+{{/inline}}
+
+{{/"layouts/dashboard"}}

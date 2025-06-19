@@ -39,7 +39,7 @@ const schema = new mongoose.Schema(
   }
 );
 
-schema.pre("deleteOne", async function (next) {
+schema.pre("findOneAndDelete", async function (next) {
   const filter = this.getFilter();
   if (!filter || !filter._id) return next();
   const count = await Order.countDocuments({ product: filter._id });
